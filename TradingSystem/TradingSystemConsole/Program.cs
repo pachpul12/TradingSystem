@@ -12,10 +12,10 @@ namespace TradingSystem
             Console.WriteLine("Starting TWS Connection...");
 
             var twsConnector = new IBClient(signal);
-            //twsConnector.ConnectToTWS();
+            twsConnector.ConnectToTWS();
 
-            //Console.WriteLine("Press any key to disconnect and exit...");
-            //Console.ReadKey();
+            Console.WriteLine("Press any key to disconnect and exit...");
+            Console.ReadKey();
 
             //twsConnector.DisconnectFromTWS();
         }

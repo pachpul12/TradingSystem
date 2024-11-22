@@ -109,11 +109,13 @@ namespace TradingSystem
 
         public IBClient(EReaderSignal signal)
         {
+            Signal = signal;
             ClientSocket = new EClientSocket(this, signal);
             sc = SynchronizationContext.Current;
         }
 
         public EClientSocket ClientSocket { get; private set; }
+        public EReaderSignal Signal { get; private set; }
 
         public int NextOrderId { get; set; }
 
@@ -1010,6 +1012,50 @@ namespace TradingSystem
             var tmp = UserInfo;
             if (tmp != null)
                 sc.Post(t => tmp(whiteBrandingId), null);
+        }
+
+        public void ConnectToTWS()
+        {
+            string host = "127.0.0.1"; // Localhost for TWS
+            int port = 7497;          // Default port for paper trading, use 7496 for live
+            int clientId = 0;         // Unique client ID
+
+            try
+            {
+                // Establish the connection
+                ClientSocket.eConnect(host, port, clientId);
+
+                if (ClientSocket.IsConnected())
+                {
+                    Console.WriteLine("Successfully connected to TWS.");
+                    StartMessageProcessing();
+                }
+                else
+                {
+                    Console.WriteLine("Failed to connect to TWS.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error connecting to TWS: {ex.Message}");
+            }
+        }
+
+        private void StartMessageProcessing()
+        {
+            var reader = new EReader(ClientSocket, Signal);
+            reader.Start();
+
+            // Use a background thread to continuously process incoming messages
+            new System.Threading.Thread(() =>
+            {
+                while (ClientSocket.IsConnected())
+                {
+                    Signal.waitForSignal();
+                    reader.processMsgs();
+                }
+            })
+            { IsBackground = true }.Start();
         }
     }
 }
