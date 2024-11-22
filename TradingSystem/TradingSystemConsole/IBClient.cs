@@ -1061,6 +1061,28 @@ namespace TradingSystem
             }
         }
 
+        public void GetRealtimeDataForSymbol(string symbol, string exchange, string currency, string secType = "STK")
+        {
+            if (ClientSocket == null || !ClientSocket.IsConnected())
+            {
+                Console.WriteLine("Not connected to TWS. Please connect before requesting real-time data.");
+                return;
+            }
+
+            var contract = new Contract
+            {
+                Symbol = symbol,
+                SecType = secType, // Default to "STK" (stock)
+                Exchange = exchange,
+                Currency = currency
+            };
+
+            int requestId = 0;
+            ClientSocket.reqMktData(requestId, contract, "", false, false, null);
+
+            Console.WriteLine($"Requested real-time data for {symbol} on {exchange}.");
+        }
+
 
         private void StartMessageProcessing()
         {
