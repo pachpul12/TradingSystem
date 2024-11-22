@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSharpAPI">
+      <HintPath>..\..\..\..\..\..\TWS API\samples\CSharp\IBSampleApp\bin\Release\CSharpAPI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,8 +46,74 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="messages\AccountDownloadEndMessage.cs" />
+    <Compile Include="messages\AccountSummaryEndMessage.cs" />
+    <Compile Include="messages\AccountSummaryMessage.cs" />
+    <Compile Include="messages\AccountUpdateMultiEndMessage.cs" />
+    <Compile Include="messages\AccountUpdateMultiMessage.cs" />
+    <Compile Include="messages\AccountValueMessage.cs" />
+    <Compile Include="messages\AdvisorDataMessage.cs" />
+    <Compile Include="messages\BondContractDetailsMessage.cs" />
+    <Compile Include="messages\CommissionMessage.cs" />
+    <Compile Include="messages\CompletedOrderMessage.cs" />
+    <Compile Include="messages\ConnectionStatusMessage.cs" />
+    <Compile Include="messages\ContractDetailsEndMessage.cs" />
+    <Compile Include="messages\ContractDetailsMessage.cs" />
+    <Compile Include="messages\DeepBookMessage.cs" />
+    <Compile Include="messages\ErrorMessage.cs" />
+    <Compile Include="messages\ExecutionMessage.cs" />
+    <Compile Include="messages\FamilyCodesMessage.cs" />
+    <Compile Include="messages\FundamentalsMessage.cs" />
+    <Compile Include="messages\HeadTimestampMessage.cs" />
+    <Compile Include="messages\HistogramDataMessage.cs" />
+    <Compile Include="messages\HistoricalDataEndMessage.cs" />
+    <Compile Include="messages\HistoricalDataMessage.cs" />
+    <Compile Include="messages\HistoricalNewsEndMessage.cs" />
+    <Compile Include="messages\HistoricalNewsMessage.cs" />
+    <Compile Include="messages\HistoricalScheduleMessage.cs" />
+    <Compile Include="messages\HistoricalTickBidAskEndMessage.cs" />
+    <Compile Include="messages\HistoricalTickBidAskMessage.cs" />
+    <Compile Include="messages\HistoricalTickEndMessage.cs" />
+    <Compile Include="messages\HistoricalTickLastEndMessage.cs" />
+    <Compile Include="messages\HistoricalTickLastMessage.cs" />
+    <Compile Include="messages\HistoricalTickMessage.cs" />
+    <Compile Include="messages\ManagedAccountsMessage.cs" />
+    <Compile Include="messages\MarketDataMessage.cs" />
+    <Compile Include="messages\MarketDataTypeMessage.cs" />
+    <Compile Include="messages\MarketRuleMessage.cs" />
+    <Compile Include="messages\MktDepthExchangesMessage.cs" />
+    <Compile Include="messages\NewsArticleMessage.cs" />
+    <Compile Include="messages\NewsProvidersMessage.cs" />
+    <Compile Include="messages\OpenOrderMessage.cs" />
+    <Compile Include="messages\OrderBoundMessage.cs" />
+    <Compile Include="messages\OrderMessage.cs" />
+    <Compile Include="messages\OrderStatusMessage.cs" />
+    <Compile Include="messages\PnLMessage.cs" />
+    <Compile Include="messages\PnLSingleMessage.cs" />
+    <Compile Include="messages\PositionMessage.cs" />
+    <Compile Include="messages\PositionMultiEndMessage.cs" />
+    <Compile Include="messages\PositionMultiMessage.cs" />
+    <Compile Include="messages\RealTimeBarMessage.cs" />
+    <Compile Include="messages\ScannerEndMessage.cs" />
+    <Compile Include="messages\ScannerMessage.cs" />
+    <Compile Include="messages\ScannerParametersMessage.cs" />
+    <Compile Include="messages\SecurityDefinitionOptionParameterEndMessage.cs" />
+    <Compile Include="messages\SecurityDefinitionOptionParameterMessage.cs" />
+    <Compile Include="messages\SoftDollarTiersMessage.cs" />
+    <Compile Include="messages\SymbolSamplesMessage.cs" />
+    <Compile Include="messages\TickByTickAllLastMessage.cs" />
+    <Compile Include="messages\TickByTickBidAskMessage.cs" />
+    <Compile Include="messages\TickByTickMidPointMessage.cs" />
+    <Compile Include="messages\TickGenericMessage.cs" />
+    <Compile Include="messages\TickNewsMessage.cs" />
+    <Compile Include="messages\TickOptionMessage.cs" />
+    <Compile Include="messages\TickPriceMessage.cs" />
+    <Compile Include="messages\TickSizeMessage.cs" />
+    <Compile Include="messages\UpdateAccountTimeMessage.cs" />
+    <Compile Include="messages\UpdatePortfolioMessage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TwsConnector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

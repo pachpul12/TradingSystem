@@ -1,15 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TradingSystem
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Starting TWS Connection...");
+
+            var twsConnector = new TwsConnector();
+            twsConnector.ConnectToTWS();
+
+            Console.WriteLine("Press any key to disconnect and exit...");
+            Console.ReadKey();
+
+            twsConnector.DisconnectFromTWS();
         }
     }
 }
