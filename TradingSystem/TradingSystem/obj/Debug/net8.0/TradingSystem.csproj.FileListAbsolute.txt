@@ -16,3 +16,4 @@ C:\Users\ranki\source\repos\TradingSystem\TradingSystem\obj\Debug\net8.0\Trading
 C:\Users\ranki\source\repos\TradingSystem\TradingSystem\obj\Debug\net8.0\ref\TradingSystem.dll
 C:\Users\ranki\source\repos\TradingSystem\TradingSystem\bin\Debug\net8.0\CSharpAPI.dll
 C:\Users\ranki\source\repos\TradingSystem\TradingSystem\bin\Debug\net8.0\CSharpAPI.pdb
+C:\Users\ranki\source\repos\TradingSystem\TradingSystem\obj\Debug\net8.0\TradingSystem.sourcelink.json
