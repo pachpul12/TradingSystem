@@ -1,0 +1,7 @@
+C:\Users\ranki\source\repos\TradingSystem\TradingSystem\bin\Debug\TradingSystem.exe.config
+C:\Users\ranki\source\repos\TradingSystem\TradingSystem\bin\Debug\TradingSystem.exe
+C:\Users\ranki\source\repos\TradingSystem\TradingSystem\bin\Debug\TradingSystem.pdb
+C:\Users\ranki\source\repos\TradingSystem\TradingSystem\obj\Debug\TradingSystem.csproj.AssemblyReference.cache
+C:\Users\ranki\source\repos\TradingSystem\TradingSystem\obj\Debug\TradingSystem.csproj.CoreCompileInputs.cache
+C:\Users\ranki\source\repos\TradingSystem\TradingSystem\obj\Debug\TradingSystem.exe
+C:\Users\ranki\source\repos\TradingSystem\TradingSystem\obj\Debug\TradingSystem.pdb
