@@ -1041,6 +1041,27 @@ namespace TradingSystem
             }
         }
 
+        public void DisconnectFromTWS()
+        {
+            try
+            {
+                if (ClientSocket != null && ClientSocket.IsConnected())
+                {
+                    ClientSocket.eDisconnect();
+                    Console.WriteLine("Successfully disconnected from TWS.");
+                }
+                else
+                {
+                    Console.WriteLine("Client is not connected to TWS.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during disconnection: {ex.Message}");
+            }
+        }
+
+
         private void StartMessageProcessing()
         {
             var reader = new EReader(ClientSocket, Signal);
