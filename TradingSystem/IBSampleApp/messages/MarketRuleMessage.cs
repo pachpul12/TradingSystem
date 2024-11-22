@@ -3,7 +3,7 @@
 
 using IBApi;
 
-namespace IBSampleApp.messages
+namespace TradingSystem.messages
 {
     public class MarketRuleMessage
     {

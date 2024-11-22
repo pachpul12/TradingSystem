@@ -4,7 +4,7 @@
 using System;
 using System.Windows.Forms;
 using IBApi;
-using IBSampleApp.messages;
+using TradingSystem.messages;
 
 namespace IBSampleApp.ui
 {

@@ -926,7 +926,7 @@ namespace IBSampleApp
             this.port_CT.Name = "port_CT";
             this.port_CT.Size = new System.Drawing.Size(83, 20);
             this.port_CT.TabIndex = 3;
-            this.port_CT.Text = "7496";
+            this.port_CT.Text = "7497";
             this.informationTooltip.SetToolTip(this.port_CT, "TWS\' listening port.");
             // 
             // port_label_CT
@@ -6668,7 +6668,7 @@ namespace IBSampleApp
             this.secType_TMD_MDT.Name = "secType_TMD_MDT";
             this.secType_TMD_MDT.Size = new System.Drawing.Size(100, 21);
             this.secType_TMD_MDT.TabIndex = 3;
-            this.secType_TMD_MDT.Text = "CASH";
+            this.secType_TMD_MDT.Text = "STK";
             // 
             // label1
             // 
@@ -6717,7 +6717,7 @@ namespace IBSampleApp
             this.symbol_TMD_MDT.Name = "symbol_TMD_MDT";
             this.symbol_TMD_MDT.Size = new System.Drawing.Size(100, 20);
             this.symbol_TMD_MDT.TabIndex = 1;
-            this.symbol_TMD_MDT.Text = "EUR";
+            this.symbol_TMD_MDT.Text = "NVDA";
             // 
             // strike_TMD_MDT
             // 
@@ -6740,7 +6740,7 @@ namespace IBSampleApp
             this.exchange_TMD_MDT.Name = "exchange_TMD_MDT";
             this.exchange_TMD_MDT.Size = new System.Drawing.Size(100, 20);
             this.exchange_TMD_MDT.TabIndex = 7;
-            this.exchange_TMD_MDT.Text = "IDEALPRO";
+            this.exchange_TMD_MDT.Text = "NASDAQ";
             // 
             // localSymbol_label_TMD_MDT
             // 

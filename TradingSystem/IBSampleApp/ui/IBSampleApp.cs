@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using IBSampleApp.messages;
+using TradingSystem.messages;
 using IBApi;
 using IBSampleApp.ui;
 using IBSampleApp.util;

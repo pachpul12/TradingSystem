@@ -2,7 +2,7 @@
  * and conditions of the IB API Non-Commercial License or the IB API Commercial License, as applicable. */
 using System;
 
-namespace IBSampleApp.messages
+namespace TradingSystem.messages
 {
     class RealTimeBarMessage : HistoricalDataMessage
     {

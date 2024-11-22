@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using IBSampleApp.types;
-using IBSampleApp.messages;
+using TradingSystem.messages;
 using IBSampleApp.util;
 
 namespace IBSampleApp.ui

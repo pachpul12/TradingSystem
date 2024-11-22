@@ -301,7 +301,7 @@ namespace IBSampleApp
             this.contractSymbol.Name = "contractSymbol";
             this.contractSymbol.Size = new System.Drawing.Size(71, 20);
             this.contractSymbol.TabIndex = 0;
-            this.contractSymbol.Text = "EUR";
+            this.contractSymbol.Text = "NVDA";
             // 
             // conditionsTab
             // 

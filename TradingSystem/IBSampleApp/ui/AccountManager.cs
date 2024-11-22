@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-using IBSampleApp.messages;
+using TradingSystem.messages;
 using System.Windows.Forms;
 using IBSampleApp.util;
 using IBApi;

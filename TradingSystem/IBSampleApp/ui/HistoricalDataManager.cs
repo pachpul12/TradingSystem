@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms.DataVisualization.Charting;
 using IBApi;
-using IBSampleApp.messages;
+using TradingSystem.messages;
 using System.Globalization;
 using System.Windows.Forms;
 

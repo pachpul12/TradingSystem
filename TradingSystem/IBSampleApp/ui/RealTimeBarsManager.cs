@@ -5,7 +5,7 @@ using System;
 using IBApi;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms;
-using IBSampleApp.messages;
+using TradingSystem.messages;
 
 namespace IBSampleApp.ui
 {

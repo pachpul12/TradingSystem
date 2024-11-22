@@ -3,8 +3,60 @@
   "WorkspaceRootPath": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\historicaldatamessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\historicalschedulemessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\histogramdatamessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\familycodesmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\messages\\contractdetailsmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:messages\\contractdetailsmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\backend\\ibclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:backend\\ibclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\connectionstatusmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\contractdetailsmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\completedordermessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\commissionmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\ibsampleapp\\messages\\commissionmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:messages\\commissionmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\bondcontractdetailsmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\twsconnector.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\messages\\accountdownloadendmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}|..\\TradingSystem\\TradingSystem.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\tradingsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\ibsampleapp\\ui\\ibsampleapp.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:ui\\ibsampleapp.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\ibsampleapp\\ui\\orderdialog.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:ui\\orderdialog.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|c:\\users\\ranki\\source\\repos\\tradingsystem\\ibsampleapp\\ui\\ibsampleapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,20 +67,12 @@
       "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:ui\\marketdatamanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\ibsampleapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:ui\\ibsampleapp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\tickreqparamsmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:ui\\tickreqparamsmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\messages\\contractdetailsmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}|IBSampleApp.csproj|solutionrelative:messages\\contractdetailsmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,11 +82,232 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HistoricalDataMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\HistoricalDataMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\HistoricalDataMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\HistoricalDataMessage.cs*",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\HistoricalDataMessage.cs*",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAUwFEAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:28:58.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HistoricalScheduleMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\HistoricalScheduleMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\HistoricalScheduleMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\HistoricalScheduleMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\HistoricalScheduleMessage.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAUwA8AAABvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:27:55.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "HistogramDataMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\HistogramDataMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\HistogramDataMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\HistogramDataMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\HistogramDataMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:27:26.991Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FamilyCodesMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\FamilyCodesMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\FamilyCodesMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\FamilyCodesMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\FamilyCodesMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:25:19.326Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ConnectionStatusMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\ConnectionStatusMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\ConnectionStatusMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\ConnectionStatusMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\ConnectionStatusMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:25:10.795Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ContractDetailsMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\ContractDetailsMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\ContractDetailsMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\ContractDetailsMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\ContractDetailsMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:24:00.804Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IBClient.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\backend\\IBClient.cs",
+              "RelativeDocumentMoniker": "backend\\IBClient.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\backend\\IBClient.cs",
+              "RelativeToolTip": "backend\\IBClient.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAxwBsAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T03:24:21.72Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ContractDetailsMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\messages\\ContractDetailsMessage.cs",
+              "RelativeDocumentMoniker": "messages\\ContractDetailsMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\messages\\ContractDetailsMessage.cs",
+              "RelativeToolTip": "messages\\ContractDetailsMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T03:28:07.849Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CompletedOrderMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\CompletedOrderMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\CompletedOrderMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\CompletedOrderMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\CompletedOrderMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:23:53.263Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CommissionMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\messages\\CommissionMessage.cs",
+              "RelativeDocumentMoniker": "messages\\CommissionMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\messages\\CommissionMessage.cs",
+              "RelativeToolTip": "messages\\CommissionMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:23:24.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CommissionMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\CommissionMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\CommissionMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\CommissionMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\CommissionMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:21:20.505Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "BondContractDetailsMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\BondContractDetailsMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\BondContractDetailsMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\BondContractDetailsMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\BondContractDetailsMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:21:13.019Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AccountDownloadEndMessage.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\AccountDownloadEndMessage.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\messages\\AccountDownloadEndMessage.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\messages\\AccountDownloadEndMessage.cs",
+              "RelativeToolTip": "..\\TradingSystem\\messages\\AccountDownloadEndMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:19:10.898Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "TwsConnector.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\TwsConnector.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\TwsConnector.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\TwsConnector.cs",
+              "RelativeToolTip": "..\\TradingSystem\\TwsConnector.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwAgAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:15:26.291Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\Program.cs",
+              "RelativeDocumentMoniker": "..\\TradingSystem\\Program.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\TradingSystem\\Program.cs",
+              "RelativeToolTip": "..\\TradingSystem\\Program.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAkwAgAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T12:04:36.81Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "IBSampleApp.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\IBSampleApp.Designer.cs",
+              "RelativeDocumentMoniker": "ui\\IBSampleApp.Designer.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\IBSampleApp.Designer.cs",
+              "RelativeToolTip": "ui\\IBSampleApp.Designer.cs",
+              "ViewState": "AgIAAEsaAAAAAAAAAAAjwFYaAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T11:50:51.759Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "IBSampleApp.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\IBSampleApp.cs",
+              "RelativeDocumentMoniker": "ui\\IBSampleApp.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\IBSampleApp.cs",
+              "RelativeToolTip": "ui\\IBSampleApp.cs",
+              "ViewState": "AgIAAG4CAAAAAAAAAAAWwHUCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T06:31:38.783Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
               "Title": "MarketDataManager.cs",
               "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\MarketDataManager.cs",
               "RelativeDocumentMoniker": "ui\\MarketDataManager.cs",
@@ -50,24 +315,25 @@
               "RelativeToolTip": "ui\\MarketDataManager.cs",
               "ViewState": "AgIAAAwAAAAAAAAAAAAAAAwAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-22T06:41:23.497Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "IBSampleApp.cs",
-              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\IBSampleApp.cs",
-              "RelativeDocumentMoniker": "ui\\IBSampleApp.cs",
-              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\IBSampleApp.cs",
-              "RelativeToolTip": "ui\\IBSampleApp.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAgwCMAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-22T06:31:38.783Z",
+              "WhenOpened": "2024-11-22T06:41:23.497Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 16,
+              "Title": "OrderDialog.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\OrderDialog.Designer.cs",
+              "RelativeDocumentMoniker": "ui\\OrderDialog.Designer.cs",
+              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\OrderDialog.Designer.cs",
+              "RelativeToolTip": "ui\\OrderDialog.Designer.cs",
+              "ViewState": "AgIAACQBAAAAAAAAAADwvy8BAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-22T11:56:15.572Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
               "Title": "IBSampleApp.cs [Design]",
               "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\IBSampleApp.cs",
               "RelativeDocumentMoniker": "ui\\IBSampleApp.cs",
@@ -78,7 +344,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 20,
               "Title": "TickReqParamsMessage.cs",
               "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\ui\\TickReqParamsMessage.cs",
               "RelativeDocumentMoniker": "ui\\TickReqParamsMessage.cs",
@@ -86,48 +352,8 @@
               "RelativeToolTip": "ui\\TickReqParamsMessage.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-22T06:27:00.28Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ContractDetailsMessage.cs",
-              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\messages\\ContractDetailsMessage.cs",
-              "RelativeDocumentMoniker": "messages\\ContractDetailsMessage.cs",
-              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\messages\\ContractDetailsMessage.cs",
-              "RelativeToolTip": "messages\\ContractDetailsMessage.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-22T03:28:07.849Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "IBClient.cs",
-              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\backend\\IBClient.cs",
-              "RelativeDocumentMoniker": "backend\\IBClient.cs",
-              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\backend\\IBClient.cs",
-              "RelativeToolTip": "backend\\IBClient.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAYAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-22T03:24:21.72Z",
+              "WhenOpened": "2024-11-22T06:27:00.28Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{269a02dc-6af8-11d3-bdc4-00c04f688e50}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\ranki\\source\\repos\\TradingSystem\\IBSampleApp\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAIwBAAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-21T01:50:49.767Z"
             }
           ]
         }

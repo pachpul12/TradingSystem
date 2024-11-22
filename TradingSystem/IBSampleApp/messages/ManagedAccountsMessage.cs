@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace IBSampleApp.messages
+namespace TradingSystem.messages
 {
     class ManagedAccountsMessage
     {

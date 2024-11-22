@@ -6,7 +6,7 @@ using System.Linq;
 
 using IBApi;
 
-using IBSampleApp.messages;
+using TradingSystem.messages;
 using System.Threading;
 using System.Threading.Tasks;
 

@@ -1,8 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBSampleApp", "IBSampleApp.csproj", "{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpAPI", "..\..\..\source\csharpclient\client\CSharpAPI.csproj", "{8EDE0744-96C2-40B0-A8DC-37DF79370203}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingSystem", "..\TradingSystem\TradingSystem.csproj", "{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,12 +20,14 @@ Global
 		{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB7BDB4D-923F-4C4E-BB20-68DBDC33C10A}.Release|x64.ActiveCfg = Release|Any CPU
-		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8EDE0744-96C2-40B0-A8DC-37DF79370203}.Release|x64.ActiveCfg = Release|Any CPU
+		{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}.Debug|x64.Build.0 = Debug|Any CPU
+		{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}.Release|x64.ActiveCfg = Release|Any CPU
+		{C8A64869-D4F1-48D0-8418-CE0CEAB4249F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

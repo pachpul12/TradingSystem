@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 using System.Windows.Forms;
-using IBSampleApp.messages;
+using TradingSystem.messages;
 using IBApi;
 
 namespace IBSampleApp.ui
