@@ -14,10 +14,12 @@ namespace TradingSystem
             var twsConnector = new IBClient(signal);
             twsConnector.ConnectToTWS();
 
+            twsConnector.GetRealtimeDataForSymbol("NVDA", "NASDAQ", "USD", "STK");
+
             Console.WriteLine("Press any key to disconnect and exit...");
             Console.ReadKey();
 
-            //twsConnector.DisconnectFromTWS();
+            twsConnector.DisconnectFromTWS();
         }
     }
 }
