@@ -105,6 +105,8 @@ namespace TradingSystem
 
         public int ClientId { get; set; }
 
+        private int nextRequestId = 0;
+
         SynchronizationContext sc;
 
         public IBClient(EReaderSignal signal)
@@ -1077,7 +1079,7 @@ namespace TradingSystem
                 Currency = currency
             };
 
-            int requestId = 0;
+            int requestId = nextRequestId++;
             ClientSocket.reqMktData(requestId, contract, "", false, false, null);
 
             Console.WriteLine($"Requested real-time data for {symbol} on {exchange}.");
