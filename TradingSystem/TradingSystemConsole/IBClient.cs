@@ -738,6 +738,8 @@ namespace TradingSystem
 
         public event Action<int, Dictionary<int, KeyValuePair<string, char>>> SmartComponents;
 
+        public Dictionary<int, string> RequestIdToSymbol = new Dictionary<int, string>();
+
         void EWrapper.smartComponents(int reqId, Dictionary<int, KeyValuePair<string, char>> theMap)
         {
             var tmp = SmartComponents;
@@ -1080,6 +1082,8 @@ namespace TradingSystem
             };
 
             int requestId = nextRequestId++;
+
+            RequestIdToSymbol[requestId] = symbol;
             ClientSocket.reqMktData(requestId, contract, "", false, false, null);
 
             Console.WriteLine($"Requested real-time data for {symbol} on {exchange}.");
