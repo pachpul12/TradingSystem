@@ -1089,6 +1089,79 @@ namespace TradingSystem
             Console.WriteLine($"Requested real-time data for {symbol} on {exchange}.");
         }
 
+        public void GetHistoricalDataForSymbol(string symbol, string exchange, string currency, string duration, string barSize, string secType = "STK", string endDateTime = "", string whatToShow = "TRADES")
+        {
+            if (ClientSocket == null || !ClientSocket.IsConnected())
+            {
+                Console.WriteLine("Not connected to TWS. Please connect before requesting historical data.");
+                return;
+            }
+
+            var contract = new Contract
+            {
+                Symbol = symbol,
+                SecType = secType,
+                Exchange = exchange,
+                Currency = currency
+            };
+
+            int requestId = nextRequestId++;
+            ClientSocket.reqHistoricalData(
+                requestId,
+                contract,
+                endDateTime,  // Leave empty for the current date/time
+                duration,     // Duration string (e.g., "1 D", "1 W", "1 M")
+                barSize,      // Bar size (e.g., "1 min", "5 mins", "1 day")
+                whatToShow,   // Data type to return (e.g., "TRADES", "MIDPOINT")
+                1,            // Use RTH (Regular Trading Hours) or not (1 = yes, 0 = no)
+                1,            // Format date (1 = YYYYMMDD hh:mm:ss, 2 = Unix time)
+                false,  //todo - check what is upToDate
+                null          // Chart options
+            );
+
+            Console.WriteLine($"Requested historical data for {symbol} on {exchange}.");
+        }
+
+        public void GetHistoricalTickForSymbol(
+            string symbol,
+            string exchange,
+            string currency,
+            string secType,
+            string startTime,
+            string endTime,
+            int numberOfTicks,
+            string whatToShow = "TRADES")
+        {
+            if (ClientSocket == null || !ClientSocket.IsConnected())
+            {
+                Console.WriteLine("Not connected to TWS. Please connect before requesting historical tick data.");
+                return;
+            }
+
+            var contract = new Contract
+            {
+                Symbol = symbol,
+                SecType = secType,
+                Exchange = exchange,
+                Currency = currency
+            };
+
+            int requestId = nextRequestId++;
+
+            // Request historical tick data
+            ClientSocket.reqHistoricalTicks(
+                requestId,
+                contract,
+                startTime,
+                endTime,
+                numberOfTicks,
+                whatToShow,
+                1, //use All hours// Use RTH (Regular Trading Hours)
+                true, // Ignore size (optional)
+                null);
+
+            Console.WriteLine($"Requested historical tick data for {symbol} from {startTime} to {endTime}.");
+        }
 
         private void StartMessageProcessing()
         {
