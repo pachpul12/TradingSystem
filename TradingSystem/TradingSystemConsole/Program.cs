@@ -26,7 +26,8 @@ namespace TradingSystem
         }
         public static void historicalData(HistoricalDataMessage e)
         {
-            //var button = (Button)sender; //Need to cast here
+            string symbol = ibClient.RequestIdToSymbol[e.RequestId];
+            
         }
 
         public static void historicalTick(HistoricalTickMessage e)
@@ -76,23 +77,24 @@ namespace TradingSystem
             ibClient.GetRealtimeDataForSymbol("NVDA", "NASDAQ", "USD", "STK");
             ibClient.GetRealtimeDataForSymbol("MSFT", "NASDAQ", "USD", "STK");
 
-            //ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "1 min");
             
             string oneMonthAgo = String.Concat(DateTime.Now.AddMonths(-1).ToString("yyyyMMdd hh:mm:ss"), "");
             string yesterday = String.Concat(DateTime.Now.AddDays(-1).ToString("yyyyMMdd hh:mm:ss"), "");
             string twoDaysAgo = String.Concat(DateTime.Now.AddDays(-2).ToString("yyyyMMdd hh:mm:ss"), "");
 
+            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241123 23:59:59", "TRADES");
+
             Console.WriteLine("Requesting historical tick data...");
-            ibClient.GetHistoricalTickForSymbol(
-                symbol: "AAPL",              // Example symbol
-                exchange: "NASDAQ",          // Example exchange
-                currency: "USD",             // Example currency
-                secType: "STK",              // Security type: Stock
-                startTime: "20241121 09:30:00", // Example start time
-                endTime: "20241121 23:00:00",   // Example end time
-                numberOfTicks: 100,          // Number of ticks to retrieve
-                whatToShow: "TRADES"         // Data type to retrieve
-            );
+            //ibClient.GetHistoricalTickForSymbol(
+            //    symbol: "NVDA",              // Example symbol
+            //    exchange: "NASDAQ",          // Example exchange
+            //    currency: "USD",             // Example currency
+            //    secType: "STK",              // Security type: Stock
+            //    startTime: "20241120-09:30:00", // Example start time
+            //    endTime: "20241121-23:00:00",   // Example end time
+            //    numberOfTicks: 1,          // Number of ticks to retrieve
+            //    whatToShow: "MIDPOINT"// "TRADES"         // Data type to retrieve
+            //);
 
             //Simulate monitoring for a short period
 

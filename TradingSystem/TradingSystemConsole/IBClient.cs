@@ -1106,6 +1106,7 @@ namespace TradingSystem
             };
 
             int requestId = nextRequestId++;
+            RequestIdToSymbol[requestId] = symbol;
             ClientSocket.reqHistoricalData(
                 requestId,
                 contract,
