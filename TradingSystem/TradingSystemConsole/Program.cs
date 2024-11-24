@@ -11,7 +11,7 @@ namespace TradingSystem
         static IBClient ibClient;
         public static void tickPrice(TickPriceMessage e)
         {
-            //twsConnector.RequestIdToSymbol
+            //twsConnector.RequestIdToContract
             //var button = (Button)sender; //Need to cast here
         }
 
@@ -26,8 +26,18 @@ namespace TradingSystem
         }
         public static void historicalData(HistoricalDataMessage e)
         {
-            string symbol = ibClient.RequestIdToSymbol[e.RequestId];
-            
+            Contract contract = ibClient.RequestIdToContract[e.RequestId];
+            string whatToShow = ibClient.RequestIdToType[e.RequestId];
+
+            string a = "";
+        }
+
+        public static void historicalDataEnd(HistoricalDataEndMessage e)
+        {   
+            Contract contract = ibClient.RequestIdToContract[e.RequestId];
+            string whatToShow = ibClient.RequestIdToType[e.RequestId];
+
+            string a = "";
         }
 
         public static void historicalTick(HistoricalTickMessage e)
@@ -40,7 +50,6 @@ namespace TradingSystem
             long unixTimeStamp = e.Time;
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-            //var button = (Button)sender; //Need to cast here
         }
 
         public static void realtimeBar(RealTimeBarMessage e)
@@ -64,6 +73,7 @@ namespace TradingSystem
             ibClient.FundamentalData += fundamentalData;
             ibClient.HistogramData+= histogramData;
             ibClient.HistoricalData += historicalData;
+            ibClient.HistoricalDataEnd += historicalDataEnd;
             ibClient.historicalTick += historicalTick;
             ibClient.historicalTickLast += historicalTickLast;
             
@@ -82,7 +92,18 @@ namespace TradingSystem
             string yesterday = String.Concat(DateTime.Now.AddDays(-1).ToString("yyyyMMdd hh:mm:ss"), "");
             string twoDaysAgo = String.Concat(DateTime.Now.AddDays(-2).ToString("yyyyMMdd hh:mm:ss"), "");
 
-            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241123 23:59:59", "TRADES");
+            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241123 23:59:59", "BID_ASK");
+
+            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241122 23:59:59", "TRADES");
+
+            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241121 23:59:59", "TRADES");
+
+            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241120 23:59:59", "TRADES");
+
+            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241119 23:59:59", "TRADES");
+
+            //7
+            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241118 23:59:59", "TRADES");
 
             Console.WriteLine("Requesting historical tick data...");
             //ibClient.GetHistoricalTickForSymbol(

@@ -435,6 +435,8 @@ namespace TradingSystem
         {
             var tmp = HistoricalDataEnd;
 
+            HistoryDataRequestIdCompletion[reqId] = true;
+
             if (tmp != null)
                 sc.Post(t => tmp(new HistoricalDataEndMessage(reqId, startDate, endDate)), null);
         }
@@ -738,7 +740,9 @@ namespace TradingSystem
 
         public event Action<int, Dictionary<int, KeyValuePair<string, char>>> SmartComponents;
 
-        public Dictionary<int, string> RequestIdToSymbol = new Dictionary<int, string>();
+        public Dictionary<int, Contract> RequestIdToContract = new Dictionary<int, Contract>();
+        public Dictionary<int, string> RequestIdToType = new Dictionary<int, string>();
+        public Dictionary<int, bool> HistoryDataRequestIdCompletion = new Dictionary<int, bool>();
 
         void EWrapper.smartComponents(int reqId, Dictionary<int, KeyValuePair<string, char>> theMap)
         {
@@ -1083,8 +1087,9 @@ namespace TradingSystem
 
             int requestId = nextRequestId++;
 
-            RequestIdToSymbol[requestId] = symbol;
+            RequestIdToContract[requestId] = contract;
             ClientSocket.reqMktData(requestId, contract, "", false, false, null);
+            //todo - ClientSocket.reqRealTimeBars(
 
             Console.WriteLine($"Requested real-time data for {symbol} on {exchange}.");
         }
@@ -1106,7 +1111,9 @@ namespace TradingSystem
             };
 
             int requestId = nextRequestId++;
-            RequestIdToSymbol[requestId] = symbol;
+            RequestIdToContract[requestId] = contract;
+            RequestIdToType[requestId] = whatToShow;
+            HistoryDataRequestIdCompletion[requestId] = false;
             ClientSocket.reqHistoricalData(
                 requestId,
                 contract,
