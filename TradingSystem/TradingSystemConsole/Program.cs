@@ -3,12 +3,14 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using IBApi;
 using TradingSystem.messages;
+using TradingSystemConsole;
 
 namespace TradingSystem
 {
     class Program
     {
         static IBClient ibClient;
+        
         public static void tickPrice(TickPriceMessage e)
         {
             //twsConnector.RequestIdToContract
@@ -23,21 +25,6 @@ namespace TradingSystem
         public static void histogramData(HistogramDataMessage e)
         {
             //var button = (Button)sender; //Need to cast here
-        }
-        public static void historicalData(HistoricalDataMessage e)
-        {
-            Contract contract = ibClient.RequestIdToContract[e.RequestId];
-            string whatToShow = ibClient.RequestIdToType[e.RequestId];
-
-            string a = "";
-        }
-
-        public static void historicalDataEnd(HistoricalDataEndMessage e)
-        {   
-            Contract contract = ibClient.RequestIdToContract[e.RequestId];
-            string whatToShow = ibClient.RequestIdToType[e.RequestId];
-
-            string a = "";
         }
 
         public static void historicalTick(HistoricalTickMessage e)
@@ -57,6 +44,11 @@ namespace TradingSystem
 
         }
 
+        public static void historicalDataAllEnded(object sender, EventArgs e)
+        {
+            
+        }
+
         static void Main(string[] args)
         {
 
@@ -69,11 +61,12 @@ namespace TradingSystem
 
             ibClient = new IBClient(signal);
 
+            HistoryDataManager historyDataManager = new HistoryDataManager(ibClient, signal);
+            historyDataManager.InitEvents();
+
             ibClient.TickPrice += tickPrice;
             ibClient.FundamentalData += fundamentalData;
             ibClient.HistogramData+= histogramData;
-            ibClient.HistoricalData += historicalData;
-            ibClient.HistoricalDataEnd += historicalDataEnd;
             ibClient.historicalTick += historicalTick;
             ibClient.historicalTickLast += historicalTickLast;
             
@@ -84,26 +77,28 @@ namespace TradingSystem
 
             ibClient.ConnectToTWS();
 
-            ibClient.GetRealtimeDataForSymbol("NVDA", "NASDAQ", "USD", "STK");
-            ibClient.GetRealtimeDataForSymbol("MSFT", "NASDAQ", "USD", "STK");
+            //ibClient.GetRealtimeDataForSymbol("NVDA", "NASDAQ", "USD", "STK");
+            //ibClient.GetRealtimeDataForSymbol("MSFT", "NASDAQ", "USD", "STK");
 
             
             string oneMonthAgo = String.Concat(DateTime.Now.AddMonths(-1).ToString("yyyyMMdd hh:mm:ss"), "");
             string yesterday = String.Concat(DateTime.Now.AddDays(-1).ToString("yyyyMMdd hh:mm:ss"), "");
             string twoDaysAgo = String.Concat(DateTime.Now.AddDays(-2).ToString("yyyyMMdd hh:mm:ss"), "");
 
-            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241123 23:59:59", "BID_ASK");
 
-            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241122 23:59:59", "TRADES");
+            //historyDataManager.GetDataForSymbol(
+            //    new DateTime(2023, 01, 01, 0, 0, 0), 
+            //    new DateTime(2024, 01, 01, 0, 0, 0), 
+            //    "NVDA",
+            //    "NASDAQ");
 
-            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241121 23:59:59", "TRADES");
+            historyDataManager.FetchHistoricalDataInChunks("NVDA", "NASDAQ", "USD", "STK", "1 min", "TRADES");
+            //ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241120 23:59:59", "TRADES");
 
-            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241120 23:59:59", "TRADES");
+            //ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241119 23:59:59", "TRADES");
 
-            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241119 23:59:59", "TRADES");
-
-            //7
-            ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241118 23:59:59", "TRADES");
+            ////7
+            //ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241118 23:59:59", "TRADES");
 
             Console.WriteLine("Requesting historical tick data...");
             //ibClient.GetHistoricalTickForSymbol(

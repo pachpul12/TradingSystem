@@ -431,6 +431,8 @@ namespace TradingSystem
 
         public event Action<HistoricalDataEndMessage> HistoricalDataEnd;
 
+        public event EventHandler HistoricalDataAllEnded;
+
         void EWrapper.historicalDataEnd(int reqId, string startDate, string endDate)
         {
             var tmp = HistoricalDataEnd;
@@ -439,6 +441,19 @@ namespace TradingSystem
 
             if (tmp != null)
                 sc.Post(t => tmp(new HistoricalDataEndMessage(reqId, startDate, endDate)), null);
+
+            if (!HistoryDataRequestIdCompletion.ContainsValue(false))
+            {
+                if (HistoricalDataAllEnded != null)
+                {   
+                    HistoricalDataAllEnded(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        public void ResetHistoryDataCompletionDictionary()
+        {
+            HistoryDataRequestIdCompletion = new Dictionary<int, bool>();
         }
 
         public event Action<MarketDataTypeMessage> MarketDataType;
