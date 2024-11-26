@@ -1,73 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
 using TradingEngine.Data;
-using TradingEngine.Strategies;
+using TradingEngine.Interfaces;
 
-namespace TradingEngine.TradingStrategies
+namespace TradingEngine.Strategies
 {
     public class MovingAverageCrossoverStrategy : TradingStrategy
     {
-        private readonly int shortWindow;
-        private readonly int longWindow;
-        private readonly Queue<decimal> shortMovingAverageQueue;
-        private readonly Queue<decimal> longMovingAverageQueue;
+        private readonly int _shortTermPeriod;
+        private readonly int _longTermPeriod;
+        private readonly decimal _minCrossoverThreshold;
 
-        public event Action<int, string> SignalGenerated; // Event for buy/sell signals
-
-        public MovingAverageCrossoverStrategy(int stockId, int shortWindow = 5, int longWindow = 20)
-            : base("Moving Average Crossover", stockId)
+        public MovingAverageCrossoverStrategy(MarketContext marketContext, IOrderManagementService orderService, int shortTermPeriod, int longTermPeriod, decimal minCrossoverThreshold = 0.01m)
+            : base(marketContext, orderService)
         {
-            this.shortWindow = shortWindow;
-            this.longWindow = longWindow;
-            shortMovingAverageQueue = new Queue<decimal>();
-            longMovingAverageQueue = new Queue<decimal>();
+            _shortTermPeriod = shortTermPeriod;
+            _longTermPeriod = longTermPeriod;
+            _minCrossoverThreshold = minCrossoverThreshold;
         }
 
-        public override void Initialize()
+        public override TradingSignal Evaluate(MarketContext context)
         {
-            Console.WriteLine($"Initializing {Name} for StockId: {StockId}");
-            // Load historical data or any other initialization logic
-        }
+            // Retrieve historical price data from context
+            List<PriceData> prices = context.HistoricalPrices;
 
-        public override void OnPriceDataReceived(PriceData priceData)
-        {
-            // Update moving average queues
-            UpdateMovingAverage(shortMovingAverageQueue, priceData.Close, shortWindow);
-            UpdateMovingAverage(longMovingAverageQueue, priceData.Close, longWindow);
-
-            if (shortMovingAverageQueue.Count == shortWindow && longMovingAverageQueue.Count == longWindow)
+            if (prices == null || prices.Count < _longTermPeriod)
             {
-                var shortMA = shortMovingAverageQueue.Average();
-                var longMA = longMovingAverageQueue.Average();
-
-                // Generate buy/sell signals
-                if (shortMA > longMA)
-                {
-                    SignalGenerated?.Invoke(StockId, "BUY");
-                    Console.WriteLine($"BUY signal generated for StockId: {StockId}");
-                }
-                else if (shortMA < longMA)
-                {
-                    SignalGenerated?.Invoke(StockId, "SELL");
-                    Console.WriteLine($"SELL signal generated for StockId: {StockId}");
-                }
+                return new TradingSignal { Action = SignalType.Hold}; // Not enough data for calculation
             }
-        }
 
-        private void UpdateMovingAverage(Queue<decimal> queue, decimal newValue, int window)
-        {
-            queue.Enqueue(newValue);
-            if (queue.Count > window)
+            // Calculate moving averages
+            decimal shortTermMA = CalculateMovingAverage(prices, _shortTermPeriod);
+            decimal longTermMA = CalculateMovingAverage(prices, _longTermPeriod);
+
+            // Check for crossover
+            if (shortTermMA > longTermMA + _minCrossoverThreshold)
             {
-                queue.Dequeue();
+                Console.WriteLine("Buy Signal: Short-term MA crossed above Long-term MA.");
+                return new TradingSignal { Action = SignalType.Buy };
             }
+            else if (shortTermMA < longTermMA - _minCrossoverThreshold)
+            {
+                Console.WriteLine("Sell Signal: Short-term MA crossed below Long-term MA.");
+                return new TradingSignal { Action = SignalType.Sell };
+            }
+
+            // No signal
+            return new TradingSignal { Action = SignalType.Hold };
         }
 
-        public override void Cleanup()
+        private decimal CalculateMovingAverage(List<PriceData> prices, int period)
         {
-            Console.WriteLine($"Cleaning up {Name} for StockId: {StockId}");
+            if (prices.Count < period)
+                throw new ArgumentException("Not enough data points to calculate moving average.");
+
+            decimal sum = 0;
+            for (int i = prices.Count - period; i < prices.Count; i++)
+            {
+                sum += prices[i].Close;
+            }
+
+            return sum / period;
         }
+
     }
 }

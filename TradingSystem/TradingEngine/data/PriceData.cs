@@ -13,6 +13,10 @@ namespace TradingEngine.Data
         public long Volume { get; set; } // Number of shares traded
 
         // Optional: Constructor for ease of use
+        public PriceData()
+        {
+
+        }
         public PriceData(int stockId, DateTime timestamp, decimal open, decimal high, decimal low, decimal close, long volume)
         {
             StockId = stockId;
