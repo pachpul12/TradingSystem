@@ -1,67 +1,99 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using IBApi;
-using TradingSystem;
-using TradingSystem.messages;
+using TradingEngine;
+using TradingEngine.messages;
+using Contract = IBApi.Contract;
 
-namespace TradingSystemConsole
+namespace TradingEngineConsole
 {
     class HistoryDataManager
     {
-        private IBClient ibClient;
-        private EReaderMonitorSignal signal;
+        private readonly PostgresHelper postgresHelper;
+        private readonly IBClient ibClient;
 
-        public HistoryDataManager(IBClient iBClient, EReaderMonitorSignal signal) {
-            this.ibClient = iBClient;
-            this.signal = signal;
+        public HistoryDataManager(PostgresHelper postgresHelper, IBClient ibClient) {
+            this.postgresHelper = postgresHelper;
+            this.ibClient = ibClient;
 
 
-            
         }
 
-        public void FetchHistoricalDataInChunks(string symbol, string exchange, string currency, string secType, string barSize, string whatToShow)
+        public void FetchHistoricalDataInChunks(
+        string symbol,
+        string exchange,
+        string currency,
+        string secType,
+        string barSize,
+        string whatToShow,
+        DateTime startDate,
+        DateTime endDate)
         {
-            DateTime endDate = DateTime.Now;
-            DateTime startDate = endDate.AddDays(-1); // Fetch 1 day at a time
-            DateTime targetDate = endDate.AddYears(-1); // Target is 5 years of data
+            DateTime currentEndDate = endDate;
+            DateTime currentStartDate;
 
-            while (endDate > targetDate)
+            while (currentEndDate > startDate)
             {
+                // Adjust to fetch one day of data per chunk
+                currentStartDate = currentEndDate.AddDays(-1);
+                if (currentStartDate < startDate)
+                {
+                    currentStartDate = startDate; // Adjust to the start date if it exceeds the range
+                }
+
+                Console.WriteLine($"Requesting data for {symbol} from {currentStartDate:yyyyMMdd} to {currentEndDate:yyyyMMdd}...");
                 try
                 {
-                    Console.WriteLine($"Requesting data from {startDate:yyyyMMdd} to {endDate:yyyyMMdd} for {symbol}.");
-                    ibClient.GetHistoricalDataForSymbol(
-                        symbol,
-                        exchange,
-                        currency,
-                        $"{(endDate - startDate).TotalDays} D",
-                        barSize,
-                        secType,
-                        endDate.ToString("yyyyMMdd HH:mm:ss"),
-                        whatToShow
+                    Contract contract = new Contract{
+                        Symbol = symbol,
+                            SecType = secType,
+                            Exchange = exchange,
+                            Currency = currency
+                        };
+
+                    int reqId = this.ibClient.nextRequestId++;
+                    this.ibClient.RequestIdToContract[reqId] = contract;
+                    this.ibClient.RequestIdToType[reqId] = whatToShow;
+                    this.ibClient.HistoryDataRequestIdCompletion[reqId] = false;
+
+                    ibClient.ClientSocket.reqHistoricalData(
+                        tickerId: reqId,
+                        contract: contract,
+                        endDateTime: currentEndDate.ToString("yyyyMMdd HH:mm:ss"),
+                        durationStr: "1 D", // 1 day of data
+                        barSizeSetting: barSize,
+                        whatToShow: whatToShow,
+                        useRTH: 1, // Use regular trading hours
+                        formatDate: 1,
+                        keepUpToDate: false,
+                        null
                     );
 
-                    // Adjust dates for the next batch
-                    endDate = startDate;
-                    startDate = startDate.AddDays(-1);
+                    // Adjust for the next chunk
+                    currentEndDate = currentStartDate;
 
-                    // Throttle requests to avoid hitting IB's rate limit
+                    // Pause to respect API rate limits
                     Thread.Sleep(1000);
-                    break;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error fetching data for {symbol}: {ex.Message}");
+                    break; // Exit loop if an error occurs
                 }
             }
 
             Console.WriteLine($"Completed fetching historical data for {symbol}.");
         }
+
 
         public void FetchDataForMultipleStocks(List<string> symbols, string exchange, string currency, string secType, string barSize, string whatToShow)
         {
@@ -69,7 +101,7 @@ namespace TradingSystemConsole
 
             foreach (var symbol in symbols)
             {
-                tasks.Add(Task.Run(() => FetchHistoricalDataInChunks(symbol, exchange, currency, secType, barSize, whatToShow)));
+                //tasks.Add(Task.Run(() => FetchHistoricalDataInChunks(symbol, exchange, currency, secType, barSize, whatToShow)));
             }
 
             Task.WaitAll(tasks.ToArray());
@@ -113,6 +145,16 @@ namespace TradingSystemConsole
 
         public void historicalData(HistoricalDataMessage e)
         {
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            string format = "yyyyMMdd HH:mm:ss";
+
+            var dateArray = e.Date.Split(" ");
+
+            string dateFinal = dateArray[0] + " " + dateArray[1];
+
+            DateTime date = DateTime.ParseExact(dateFinal, format, provider);
+
+            postgresHelper.InsertToHistoricalPrices(1, date, (decimal)e.Open, (decimal)e.High, (decimal)e.Low, (decimal)e.Close, e.Volume);
             Contract contract = ibClient.RequestIdToContract[e.RequestId];
             string whatToShow = ibClient.RequestIdToType[e.RequestId];
 
@@ -126,5 +168,25 @@ namespace TradingSystemConsole
 
             string a = "";
         }
+
+        public void SaveHistoricalData(HistoricalDataMessage e)
+        {
+            var contract = ibClient.RequestIdToContract[e.RequestId];
+            var query = @"
+            INSERT INTO HistoricalPrices (Symbol, TimeStamp, Open, High, Low, Close, Volume)
+            VALUES (@Symbol, @TimeStamp, @Open, @High, @Low, @Close, @Volume)";
+
+            postgresHelper.ExecuteNonQuery(query, cmd =>
+            {
+                cmd.Parameters.AddWithValue("Symbol", contract.Symbol);
+                cmd.Parameters.AddWithValue("TimeStamp", e.Date);
+                cmd.Parameters.AddWithValue("Open", e.Open);
+                cmd.Parameters.AddWithValue("High", e.High);
+                cmd.Parameters.AddWithValue("Low", e.Low);
+                cmd.Parameters.AddWithValue("Close", e.Close);
+                cmd.Parameters.AddWithValue("Volume", e.Volume);
+            });
+        }
     }
 }
+

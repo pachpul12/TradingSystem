@@ -6,11 +6,11 @@ using System.Linq;
 
 using IBApi;
 
-using TradingSystem.messages;
+using TradingEngine.messages;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TradingSystem
+namespace TradingEngine
 {
     class IBClient : EWrapper
     {
@@ -105,7 +105,7 @@ namespace TradingSystem
 
         public int ClientId { get; set; }
 
-        private int nextRequestId = 0;
+        public int nextRequestId = 0;
 
         SynchronizationContext sc;
 

@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Npgsql" Version="9.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="CSharpAPI">
       <HintPath>..\..\..\..\..\..\TWS API\samples\CSharp\IBSampleApp\bin\Release\CSharpAPI.dll</HintPath>
     </Reference>

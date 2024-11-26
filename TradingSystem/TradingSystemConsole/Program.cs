@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Configuration;
+using System.Globalization;
 using System.Net;
 using System.Runtime.CompilerServices;
 using IBApi;
-using TradingSystem.messages;
-using TradingSystemConsole;
+using TradingEngine.messages;
+using TradingEngineConsole;
 
-namespace TradingSystem
+namespace TradingEngine
 {
     class Program
     {
@@ -61,7 +63,11 @@ namespace TradingSystem
 
             ibClient = new IBClient(signal);
 
-            HistoryDataManager historyDataManager = new HistoryDataManager(ibClient, signal);
+            HistoryDataManager historyDataManager = 
+                new HistoryDataManager(new PostgresHelper(
+                    //ConfigurationManager.AppSettings["PostgresConnection"]
+                    "Host=localhost;Port=5432;Database=tradingdb;Username=postgres;Password=postgres"
+                    ), ibClient);
             historyDataManager.InitEvents();
 
             ibClient.TickPrice += tickPrice;
@@ -92,7 +98,7 @@ namespace TradingSystem
             //    "NVDA",
             //    "NASDAQ");
 
-            historyDataManager.FetchHistoricalDataInChunks("NVDA", "NASDAQ", "USD", "STK", "1 min", "TRADES");
+            historyDataManager.FetchHistoricalDataInChunks("NVDA", "NASDAQ", "USD", "STK", "1 min", "TRADES", DateTime.Now.AddYears(-5), DateTime.Now);
             //ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241120 23:59:59", "TRADES");
 
             //ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241119 23:59:59", "TRADES");
