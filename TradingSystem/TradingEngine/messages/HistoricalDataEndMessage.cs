@@ -3,7 +3,7 @@
 
 namespace TradingEngine.messages
 {
-    class HistoricalDataEndMessage
+    public class HistoricalDataEndMessage
     {
         public string StartDate { get; set; }
 

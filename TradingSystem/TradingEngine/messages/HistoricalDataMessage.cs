@@ -3,7 +3,7 @@
 
 namespace TradingEngine.messages
 {
-    class HistoricalDataMessage
+    public class HistoricalDataMessage
     {
         protected int requestId;
         protected string date;

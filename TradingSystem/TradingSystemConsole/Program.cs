@@ -98,7 +98,7 @@ namespace TradingEngine
             //    "NVDA",
             //    "NASDAQ");
 
-            historyDataManager.FetchHistoricalDataInChunks("NVDA", "NASDAQ", "USD", "STK", "1 min", "TRADES", DateTime.Now.AddYears(-5), DateTime.Now);
+            historyDataManager.FetchHistoricalDataInChunks("AMD", "NASDAQ", "USD", "STK", "1 min", "TRADES", DateTime.Now.AddYears(-5), DateTime.Now);
             //ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241120 23:59:59", "TRADES");
 
             //ibClient.GetHistoricalDataForSymbol("NVDA", "NASDAQ", "USD", "1 D", "5 secs", "STK", "20241119 23:59:59", "TRADES");

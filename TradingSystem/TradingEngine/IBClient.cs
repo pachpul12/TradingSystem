@@ -419,7 +419,7 @@ namespace TradingEngine
                 sc.Post(t => tmp(new FundamentalsMessage(data)), null);
         }
 
-        event Action<HistoricalDataMessage> HistoricalData;
+        public event Action<HistoricalDataMessage> HistoricalData;
 
         void EWrapper.historicalData(int reqId, Bar bar)
         {
@@ -429,7 +429,7 @@ namespace TradingEngine
                 sc.Post(t => tmp(new HistoricalDataMessage(reqId, bar)), null);
         }
 
-        event Action<HistoricalDataEndMessage> HistoricalDataEnd;
+        public event Action<HistoricalDataEndMessage> HistoricalDataEnd;
 
         public event EventHandler HistoricalDataAllEnded;
 
