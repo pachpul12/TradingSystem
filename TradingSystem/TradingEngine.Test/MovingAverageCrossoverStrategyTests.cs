@@ -43,6 +43,166 @@ namespace TradingEngine.Tests
         private List<TestPosition> _testPositions = new List<TestPosition>();
 
         [Test]
+        public void RunStrategyOnOneYearData_IntradayTrading_OneStock()
+        {
+            // Input parameters
+            int stockId = 1; // Example stock ID
+            DateTime startDate = new DateTime(2023, 01, 01);
+            DateTime endDate = new DateTime(2023, 12, 31);
+
+            RunStrategyForStock(stockId, startDate, endDate);
+        }
+
+        [Test]
+        public void RunStrategyOnOneYearData_IntradayTrading_MultipleStocks()
+        {
+            // Input parameters
+            DateTime startDate = new DateTime(2023, 11, 23);
+            DateTime endDate = new DateTime(2024, 11, 22);
+
+            for (int i = 1; i < 36; i++)
+            {
+                RunStrategyForStock(i, startDate, endDate);
+            }
+        }
+
+        public void RunStrategyForStock(int stockId, DateTime startDate, DateTime endDate)
+        {
+            // Query to filter days with exactly 390 records
+            string validDaysQuery = @$"
+SELECT date_trunc('day', timestamp) as day
+FROM historical_prices
+WHERE stock_id = {stockId}
+GROUP BY date_trunc('day', timestamp)
+HAVING COUNT(*) = 390
+ORDER BY day ASC;";
+
+            DataTable validDays = _postgresHelper.ExecuteQuery(validDaysQuery);
+
+            if (validDays == null || validDays.Rows.Count == 0)
+            {
+                Console.WriteLine("No valid days with 390 records found for the specified stock and date range.");
+                return;
+            }
+
+
+            decimal funds = 1000;
+
+            decimal profitLoss = 0;
+            decimal? entryPrice = null;
+            int? entryAmount = null;
+            decimal? entryPriceTotal = null;
+            List<TradingSignal> signals = new List<TradingSignal>();
+
+            foreach (DataRow validDayRow in validDays.Rows)
+            {
+                DateTime currentDay = (DateTime)validDayRow["day"];
+
+                // Query historical prices for the valid day
+                string dailyQuery = @$"
+SELECT * 
+FROM historical_prices
+WHERE stock_id = {stockId}
+  AND timestamp >= '{currentDay:yyyy-MM-dd}'
+  AND timestamp < '{currentDay.AddDays(1):yyyy-MM-dd}'
+ORDER BY timestamp ASC;";
+
+                DataTable dailyPrices = _postgresHelper.ExecuteQuery(dailyQuery);
+
+                if (dailyPrices == null || dailyPrices.Rows.Count != 390)
+                {
+                    // Skip days with incomplete data
+                    continue;
+                }
+
+                _mockMarketContext.HistoricalPrices.Clear(); // Reset for the new day
+
+                foreach (DataRow row in dailyPrices.Rows)
+                {
+                    DateTime timestamp = (DateTime)row["timestamp"];
+                    decimal closePrice = (decimal)row["close_price"];
+
+                    if (timestamp == new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, 15, 59, 0))
+                    {
+                        //on last trading minute - sell all holdings
+                        if (entryPrice != null)
+                        {
+                            profitLoss += closePrice - entryPrice.Value;
+                            entryPrice = null; // Reset entry price
+                            funds += closePrice * entryAmount.Value;
+                        }
+                    }
+
+                    // Add new price data to the context
+                    _mockMarketContext.HistoricalPrices.Add(new PriceData
+                    {
+                        StockId = stockId,
+                        Timestamp = timestamp,
+                        Open = (decimal)row["open_price"],
+                        High = (decimal)row["high_price"],
+                        Low = (decimal)row["low_price"],
+                        Close = closePrice,
+                        Volume = Convert.ToInt64((decimal)row["volume"])
+                    });
+
+                    // Evaluate the strategy and collect signals
+                    var signal = _strategy.Evaluate(_mockMarketContext);
+                    signals.Add(signal);
+
+                    if (signal.Action == SignalType.Buy && entryPrice == null)
+                    {
+                        entryPrice = closePrice; // Record entry price
+                        entryAmount = (int)Math.Floor(funds / entryPrice.Value);
+                        entryPriceTotal = entryAmount * entryPrice.Value;
+                        funds -= entryPriceTotal.Value;
+                    }
+                    else if (signal.Action == SignalType.Sell && entryPrice != null)
+                    {
+                        // Calculate profit/loss
+                        profitLoss += closePrice - entryPrice.Value;
+                        entryPrice = null; // Reset entry price
+                        funds += closePrice * entryAmount.Value;
+                    }
+                }
+            }
+
+            // Prepare data for insertion
+            var signalsJson = Newtonsoft.Json.JsonConvert.SerializeObject(signals);
+            var parametersJson = Newtonsoft.Json.JsonConvert.SerializeObject(new
+            {
+                ShortTermPeriod = 5,
+                LongTermPeriod = 15,
+                MinCrossoverThreshold = 0.01m
+            });
+
+            // Insert execution results into the database
+            string insertQuery = @$"
+INSERT INTO strategy_execution (
+    strategy_name,
+    single_stock_id,
+    start_date,
+    end_date,
+    parameters,
+    signals,
+    profit_loss
+)
+VALUES (
+    'MovingAverageCrossover',
+    {stockId},
+    '{startDate:yyyy-MM-dd}',
+    '{endDate:yyyy-MM-dd}',
+    '{parametersJson}'::jsonb,
+    '{signalsJson}'::jsonb,
+    {funds}
+);";
+
+            _postgresHelper.ExecuteNonQuery(insertQuery);
+
+            Console.WriteLine($"Strategy execution completed for stock {stockId}. Total P/L: {profitLoss:C}");
+        }
+
+
+        [Test]
         public void SimulateEarnings_MovingAverageCrossoverStrategy_HistoryData_EntireDataForStock()
         {
             _testPositions.Clear();

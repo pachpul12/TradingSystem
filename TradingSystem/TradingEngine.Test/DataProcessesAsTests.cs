@@ -84,12 +84,12 @@ namespace TradingEngine.Tests
         }
 
         [Test]
-        [TestCase("AACG", "NASDAQ")]
+        [TestCase("NVDA", "NASDAQ")]
         [Ignore("Ignore a process data creation")]
         public void FetchStock_HistoryData_ForSymbol(string symbol, string exchange)
         {
-            DateTime endDate = new DateTime(2024, 11, 25);
-            DateTime startDate = new DateTime(2019, 11, 25);
+            DateTime endDate = new DateTime(2024, 11, 29);
+            DateTime startDate = new DateTime(2024, 11, 25);
 
             EReaderMonitorSignal signal = new EReaderMonitorSignal();
             IBClient ibClient = new IBClient(signal);
