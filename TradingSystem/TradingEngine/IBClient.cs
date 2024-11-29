@@ -757,6 +757,7 @@ namespace TradingEngine
 
         public Dictionary<int, Contract> RequestIdToContract = new Dictionary<int, Contract>();
         public Dictionary<int, string> RequestIdToType = new Dictionary<int, string>();
+        public Dictionary<int, int> RequestIdToStockId = new Dictionary<int, int>();
         public Dictionary<int, bool> HistoryDataRequestIdCompletion = new Dictionary<int, bool>();
 
         void EWrapper.smartComponents(int reqId, Dictionary<int, KeyValuePair<string, char>> theMap)

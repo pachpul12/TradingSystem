@@ -195,7 +195,7 @@ namespace TradingEngine.Tests
         [Test]
         public void Check_MovingAverageCrossoverStrategy_HistoryData_OneDay()
         {   
-            DataTable tblPrices = _postgresHelper.ExecuteQuery("SELECT * FROM public.historical_prices WHERE timestamp < '2024-11-26' AND timestamp > '2024-11-25' order by timestamp asc");
+            DataTable tblPrices = _postgresHelper.ExecuteQuery("SELECT * FROM public.historical_prices WHERE timestamp < '2024-11-26' AND timestamp > '2024-11-25' AND stock_id = 1 order by timestamp asc");
 
             if (tblPrices == null || tblPrices.Rows.Count != 390)
             {

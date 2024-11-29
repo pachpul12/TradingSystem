@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 using IBApi;
 using TradingEngine;
 using TradingEngine.messages;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using Contract = IBApi.Contract;
 
 namespace TradingEngine.Tests
@@ -40,6 +42,16 @@ namespace TradingEngine.Tests
         {
             DateTime currentEndDate = endDate;
             DateTime currentStartDate;
+            int stockId = 0;
+
+            DataTable stocks = postgresHelper.ExecuteQuery(string.Format(@"SELECT id from stocks WHERE symbol = '{0}'", symbol));
+
+            if (stocks == null || stocks.Rows.Count != 1)
+            {
+                throw new Exception("invalid stock symbol");
+            }
+
+            stockId = (int)stocks.Rows[0][0];
 
             while (currentEndDate > startDate)
             {
@@ -64,6 +76,7 @@ namespace TradingEngine.Tests
                     this.ibClient.RequestIdToContract[reqId] = contract;
                     this.ibClient.RequestIdToType[reqId] = whatToShow;
                     this.ibClient.HistoryDataRequestIdCompletion[reqId] = false;
+                    this.ibClient.RequestIdToStockId[reqId] = stockId;
 
                     ibClient.ClientSocket.reqHistoricalData(
                         tickerId: reqId,
@@ -82,7 +95,7 @@ namespace TradingEngine.Tests
                     currentEndDate = currentStartDate;
 
                     // Pause to respect API rate limits
-                    Thread.Sleep(1000);
+                    Thread.Sleep(2000);
                 }
                 catch (Exception ex)
                 {
@@ -153,12 +166,11 @@ namespace TradingEngine.Tests
             string dateFinal = dateArray[0] + " " + dateArray[1];
 
             DateTime date = DateTime.ParseExact(dateFinal, format, provider);
-
-            postgresHelper.InsertToHistoricalPrices(1, date, (decimal)e.Open, (decimal)e.High, (decimal)e.Low, (decimal)e.Close, e.Volume);
+            //todo - fix hardcoded stockid
+            int stockId = ibClient.RequestIdToStockId[e.RequestId];
+            postgresHelper.InsertToHistoricalPrices(stockId, date, (decimal)e.Open, (decimal)e.High, (decimal)e.Low, (decimal)e.Close, e.Volume);
             Contract contract = ibClient.RequestIdToContract[e.RequestId];
             string whatToShow = ibClient.RequestIdToType[e.RequestId];
-
-            string a = "";
         }
 
         void historicalDataEnd(HistoricalDataEndMessage e)

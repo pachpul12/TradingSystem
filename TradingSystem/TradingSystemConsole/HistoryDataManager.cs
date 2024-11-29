@@ -154,7 +154,7 @@ namespace TradingEngineConsole
 
             DateTime date = DateTime.ParseExact(dateFinal, format, provider);
             //todo - urgent remove fixed stock id
-            postgresHelper.InsertToHistoricalPrices(2, date, (decimal)e.Open, (decimal)e.High, (decimal)e.Low, (decimal)e.Close, e.Volume);
+            postgresHelper.InsertToHistoricalPrices(3, date, (decimal)e.Open, (decimal)e.High, (decimal)e.Low, (decimal)e.Close, e.Volume);
             Contract contract = ibClient.RequestIdToContract[e.RequestId];
             string whatToShow = ibClient.RequestIdToType[e.RequestId];
 
