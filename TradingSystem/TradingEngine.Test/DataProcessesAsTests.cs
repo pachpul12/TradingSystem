@@ -152,6 +152,22 @@ namespace TradingEngine.Tests
                 {
                     continue;
                 }
+                if (symbol.ToUpper() == "FB")
+                {
+                    continue;
+                }
+                if (symbol.ToUpper() == "FISV")
+                {
+                    continue;
+                }
+                if (symbol.ToUpper() == "ATVI")
+                {
+                    continue;
+                }
+                if (symbol.ToUpper() == "AACG")
+                {
+                    continue;
+                }
 
                 foreach (DataRow rowNvdaDate in tblNvdaDates.Rows)
                 {

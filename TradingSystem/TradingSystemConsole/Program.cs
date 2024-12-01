@@ -5,6 +5,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using IBApi;
 using TradingEngine.messages;
+using TradingEngine.Tests;
 using TradingEngineConsole;
 
 namespace TradingEngine
@@ -53,6 +54,14 @@ namespace TradingEngine
 
         static void Main(string[] args)
         {
+            DataProcessesAsTests dataProcessesAsTests = new DataProcessesAsTests();
+            dataProcessesAsTests.SetUp();
+
+
+
+            dataProcessesAsTests.FetchAllStocks_Missing_HistoryData_ForAllStocks_ByNvdaData();
+
+            return;
 
             var syncCtx = new SynchronizationContext();
             SynchronizationContext.SetSynchronizationContext(syncCtx);

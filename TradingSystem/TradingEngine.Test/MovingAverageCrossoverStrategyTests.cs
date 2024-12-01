@@ -60,7 +60,7 @@ namespace TradingEngine.Tests
             DateTime startDate = new DateTime(2023, 11, 23);
             DateTime endDate = new DateTime(2024, 11, 22);
 
-            for (int i = 1; i < 36; i++)
+            for (int i = 1; i < 44; i++)
             {
                 RunStrategyForStock(i, startDate, endDate);
             }
@@ -73,6 +73,8 @@ namespace TradingEngine.Tests
 SELECT date_trunc('day', timestamp) as day
 FROM historical_prices
 WHERE stock_id = {stockId}
+AND timestamp >= '{startDate:yyyy-MM-dd}'
+  AND timestamp < '{endDate:yyyy-MM-dd}'
 GROUP BY date_trunc('day', timestamp)
 HAVING COUNT(*) = 390
 ORDER BY day ASC;";
@@ -148,6 +150,14 @@ ORDER BY timestamp ASC;";
                     // Evaluate the strategy and collect signals
                     var signal = _strategy.Evaluate(_mockMarketContext);
                     signals.Add(signal);
+
+                    decimal stopLoss = 0.98M;
+
+                    if (entryPrice != null && entryPrice.Value* stopLoss < closePrice)
+                    {
+                        //stop loss logic
+                        signal.Action = SignalType.Sell;
+                    }
 
                     if (signal.Action == SignalType.Buy && entryPrice == null)
                     {
