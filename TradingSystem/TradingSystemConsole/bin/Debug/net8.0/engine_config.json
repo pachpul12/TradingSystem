@@ -1,0 +1,19 @@
+{
+    "Database": {
+        "ConnectionString": "Host=localhost;Port=5432;Database=tradingdb;Username=postgres;Password=postgres;Pooling=true;MinPoolSize=5;MaxPoolSize=100"
+    },
+    "Logging": {
+        "LogLevel": "Info",
+        "LogFilePath": "./logs/trading_engine.log"
+    },
+    "Strategies": {
+        "MovingAverageCrossover": {
+            "ShortTermPeriod": 5,
+            "LongTermPeriod": 20,
+            "MinCrossoverThreshold": 0.01
+        }
+    },
+    "MarketData": {
+        "PollingIntervalSeconds": 5
+    }
+}

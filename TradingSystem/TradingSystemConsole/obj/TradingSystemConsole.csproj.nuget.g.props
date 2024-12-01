@@ -13,4 +13,7 @@
     <SourceRoot Include="C:\Users\ranki\.nuget\packages\" />
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgNUnit_Analyzers Condition=" '$(PkgNUnit_Analyzers)' == '' ">C:\Users\ranki\.nuget\packages\nunit.analyzers\3.9.0</PkgNUnit_Analyzers>
+  </PropertyGroup>
 </Project>
