@@ -59,7 +59,12 @@ namespace TradingEngine
 
 
 
-            dataProcessesAsTests.FetchAllStocks_Missing_HistoryData_ForAllStocks_ByNvdaData();
+            dataProcessesAsTests.Fetch_Missing_SnP500_HistoryData_ForAllStocks_ByNvdaData();
+
+            Console.WriteLine("Press any key to disconnect and exit...");
+            Console.ReadKey();
+
+            ibClient.DisconnectFromTWS();
 
             return;
 

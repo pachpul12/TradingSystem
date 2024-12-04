@@ -14,12 +14,12 @@ using TradingEngine.Test;
 namespace TradingEngine.Tests
 {
     [TestFixture]
-    public class MovingAverageCrossoverStrategyTests
+    public class CombinedMACAndOBVStrategyTests
     {
-        private MovingAverageCrossoverStrategy _strategy;
+        private CombinedMACAndOBVStrategy _strategy;
         private MarketContext _mockMarketContext;
         private IOrderManagementService _orderManagementService;
-        
+
         private EngineConfig _engineConfig;
         private string _connectionString;
         private PostgresHelper _postgresHelper;
@@ -37,28 +37,39 @@ namespace TradingEngine.Tests
             mockObject.Setup(m => m.PlaceOrder("", "", "", "", "", 0, 0));
 
             _orderManagementService = mockObject.Object;
-            _strategy = new MovingAverageCrossoverStrategy(_mockMarketContext, _orderManagementService, 5, 15, 0.02m);
+            _strategy = new CombinedMACAndOBVStrategy(_mockMarketContext, _orderManagementService, 5, 15, 0.02m);
         }
 
         private Dictionary<string, Dictionary<int, TestPosition>> _dictStockPositionsByDayByStock = new Dictionary<string, Dictionary<int, TestPosition>>();
         private List<TestPosition> _testPositions = new List<TestPosition>();
 
         [Test]
+        public void RunStrategyOnOneYearData_IntradayTrading_OneStock()
+        {
+            // Input parameters
+            int stockId = 1; // Example stock ID
+            DateTime startDate = new DateTime(2023, 01, 01);
+            DateTime endDate = new DateTime(2023, 12, 31);
+
+            RunStrategyForStock(stockId, startDate, endDate, 5, 15, 0.02m);
+        }
+        
+        [Test]
         public void RunStrategyOnAllData_Daily_IntradayTrading_AMD()
         {
-            int stockId = 85;
-            string startDateStr = "2024-11-22";
-            string endDateStr = "2024-11-23";
+            int stockId = 4;
+            string startDateStr = "2022-08-04";
+            string endDateStr = "2022-08-05";
 
             RunStrategyOnAllData_Daily_IntradayTrading_MultipleStocks(startDateStr, endDateStr, stockId, 5, 15, 0.02);
         }
-
-
+            
+            
 
         [Test]
-        [TestCase(["2023-11-23", "2024-11-23", 85, 5, 15, 0.02])]
+        [TestCase(["2021-11-23", "2022-11-23", 4, 5, 15, 0.02])]
         public void RunStrategyOnAllData_Daily_IntradayTrading_MultipleStocks(
-            string startDateStr, string endDateStr, int stockId,
+            string startDateStr, string endDateStr,int stockId,
             int shortTermPeriod, int longTermPeriod, double minCrossoverThresholdStr)
         {
             DateTime startDate = DateTime.Parse(startDateStr);
@@ -79,24 +90,13 @@ namespace TradingEngine.Tests
         }
 
         [Test]
-        public void RunStrategyOnOneYearData_IntradayTrading_OneStock()
-        {
-            // Input parameters
-            int stockId = 1; // Example stock ID
-            DateTime startDate = new DateTime(2023, 01, 01);
-            DateTime endDate = new DateTime(2023, 12, 31);
-
-            RunStrategyForStock(stockId, startDate, endDate, 5, 15, 0.02m);
-        }
-
-        [Test]
-        [TestCase(["2023-11-23", "2024-11-23", 3, 0, 5, 15, 0.02])]
-        //[TestCase(["2022-11-23", "2023-11-23", 3, 0, 5, 15, 0.02])]
-        //[TestCase(["2021-11-23", "2022-11-23", 3, 0, 5, 15, 0.02])]
-        //[TestCase(["2020-11-23", "2021-11-23", 3, 0, 5, 15, 0.02])]
-        //[TestCase(["2019-11-23", "2020-11-23", 3, 0, 5, 15, 0.02])]
+        [TestCase(["2023-11-23", "2024-11-23", 0, 5, 15, 0.02])]
+        [TestCase(["2022-11-23", "2023-11-23", 0, 5, 15, 0.02])]
+        [TestCase(["2021-11-23", "2022-11-23", 0, 5, 15, 0.02])]
+        [TestCase(["2020-11-23", "2021-11-23", 0, 5, 15, 0.02])]
+        [TestCase(["2019-11-23", "2020-11-23", 0, 5, 15, 0.02])]
         public void RunStrategyOnOneYearData_IntradayTrading_MultipleStocks(
-            string startDateStr, string endDateStr, int pastPeriods, int stockId,
+            string startDateStr, string endDateStr, int stockId,
             int shortTermPeriod, int longTermPeriod, double minCrossoverThresholdStr)
         {
 
@@ -119,11 +119,13 @@ namespace TradingEngine.Tests
             }
         }
 
+    
+
         public void RunStrategyForStock(int stockId, DateTime startDate, DateTime endDate, int shortTermPeriod, int longTermPeriod, decimal minCrossoverThreshold)
         {
 
-            _strategy = new MovingAverageCrossoverStrategy(_mockMarketContext, _orderManagementService, shortTermPeriod, longTermPeriod, minCrossoverThreshold);
-
+            _strategy = new CombinedMACAndOBVStrategy(_mockMarketContext, _orderManagementService, shortTermPeriod, longTermPeriod, minCrossoverThreshold);
+           
             TestUtils.RunStrategyForStock(stockId, startDate, endDate, _strategy, _postgresHelper, _mockMarketContext);
         }
 

@@ -14,9 +14,9 @@ using TradingEngine.Test;
 namespace TradingEngine.Tests
 {
     [TestFixture]
-    public class MovingAverageCrossoverStrategyTests
+    public class OBVStrategyTests
     {
-        private MovingAverageCrossoverStrategy _strategy;
+        private TradingStrategy _strategy;
         private MarketContext _mockMarketContext;
         private IOrderManagementService _orderManagementService;
         
@@ -37,46 +37,11 @@ namespace TradingEngine.Tests
             mockObject.Setup(m => m.PlaceOrder("", "", "", "", "", 0, 0));
 
             _orderManagementService = mockObject.Object;
-            _strategy = new MovingAverageCrossoverStrategy(_mockMarketContext, _orderManagementService, 5, 15, 0.02m);
+            _strategy = new OBVStrategy(_mockMarketContext, _orderManagementService);
         }
 
         private Dictionary<string, Dictionary<int, TestPosition>> _dictStockPositionsByDayByStock = new Dictionary<string, Dictionary<int, TestPosition>>();
         private List<TestPosition> _testPositions = new List<TestPosition>();
-
-        [Test]
-        public void RunStrategyOnAllData_Daily_IntradayTrading_AMD()
-        {
-            int stockId = 85;
-            string startDateStr = "2024-11-22";
-            string endDateStr = "2024-11-23";
-
-            RunStrategyOnAllData_Daily_IntradayTrading_MultipleStocks(startDateStr, endDateStr, stockId, 5, 15, 0.02);
-        }
-
-
-
-        [Test]
-        [TestCase(["2023-11-23", "2024-11-23", 85, 5, 15, 0.02])]
-        public void RunStrategyOnAllData_Daily_IntradayTrading_MultipleStocks(
-            string startDateStr, string endDateStr, int stockId,
-            int shortTermPeriod, int longTermPeriod, double minCrossoverThresholdStr)
-        {
-            DateTime startDate = DateTime.Parse(startDateStr);
-            DateTime endDate = DateTime.Parse(endDateStr);
-            DateTime currentDate = endDate;
-            decimal minCrossoverThreshold = (decimal)minCrossoverThresholdStr;
-
-            // Input parameters
-            if (stockId > 0)
-            {
-                while (currentDate >= startDate)
-                {
-                    RunStrategyForStock(stockId, currentDate, currentDate.AddDays(1), shortTermPeriod, longTermPeriod, minCrossoverThreshold);
-
-                    currentDate = currentDate.AddDays(-1);
-                }
-            }
-        }
 
         [Test]
         public void RunStrategyOnOneYearData_IntradayTrading_OneStock()
@@ -86,7 +51,7 @@ namespace TradingEngine.Tests
             DateTime startDate = new DateTime(2023, 01, 01);
             DateTime endDate = new DateTime(2023, 12, 31);
 
-            RunStrategyForStock(stockId, startDate, endDate, 5, 15, 0.02m);
+            RunStrategyForStock(stockId, startDate, endDate);
         }
 
         [Test]
@@ -107,23 +72,58 @@ namespace TradingEngine.Tests
             // Input parameters
             if (stockId > 0)
             {
-                RunStrategyForStock(stockId, startDate, endDate, shortTermPeriod, longTermPeriod, minCrossoverThreshold);
+                RunStrategyForStock(stockId, startDate, endDate);
             }
             else
             {
                 //run on all stocks
                 for (int i = 1; i < 100; i++)
                 {
-                    RunStrategyForStock(i, startDate, endDate, shortTermPeriod, longTermPeriod, minCrossoverThreshold);
+                    RunStrategyForStock(i, startDate, endDate);
                 }
             }
         }
 
-        public void RunStrategyForStock(int stockId, DateTime startDate, DateTime endDate, int shortTermPeriod, int longTermPeriod, decimal minCrossoverThreshold)
+        [Test]
+        [TestCase(["2023-11-23", "2024-11-23", 3, 0, 5, 15, 0.01])]
+        //[TestCase(["2022-11-23", "2023-11-23", 3, 0, 5, 15, 0.02])]
+        //[TestCase(["2021-11-23", "2022-11-23", 3, 0, 5, 15, 0.02])]
+        //[TestCase(["2020-11-23", "2021-11-23", 3, 0, 5, 15, 0.02])]
+        //[TestCase(["2019-11-23", "2020-11-23", 3, 0, 5, 15, 0.02])]
+        public void RunStrategyOnOneYearData_OBVBreakout(
+            string startDateStr, string endDateStr, int pastPeriods, int stockId,
+            int shortTermPeriod, int longTermPeriod, double minCrossoverThresholdStr)
         {
 
-            _strategy = new MovingAverageCrossoverStrategy(_mockMarketContext, _orderManagementService, shortTermPeriod, longTermPeriod, minCrossoverThreshold);
+            DateTime startDate = DateTime.Parse(startDateStr);
+            DateTime endDate = DateTime.Parse(endDateStr);
+            
+            // Input parameters
+            if (stockId > 0)
+            {
+                RunStrategyForStockBreakoutStrategy(stockId, startDate, endDate, (decimal)minCrossoverThresholdStr);
+            }
+            else
+            {
+                //run on all stocks
+                for (int i = 1; i < 100; i++)
+                {
+                    RunStrategyForStockBreakoutStrategy(i, startDate, endDate, (decimal)minCrossoverThresholdStr);
+                }
+            }
+        }
 
+        public void RunStrategyForStock(int stockId, DateTime startDate, DateTime endDate)
+        {
+
+            _strategy = new OBVStrategy(_mockMarketContext, _orderManagementService);
+            TestUtils.RunStrategyForStock(stockId, startDate, endDate, _strategy, _postgresHelper, _mockMarketContext);
+        }
+
+        public void RunStrategyForStockBreakoutStrategy(int stockId, DateTime startDate, DateTime endDate, decimal breakoutThreshold)
+        {
+
+            _strategy = new OBVBreakoutStrategy(_mockMarketContext, _orderManagementService, 2, breakoutThreshold);
             TestUtils.RunStrategyForStock(stockId, startDate, endDate, _strategy, _postgresHelper, _mockMarketContext);
         }
 
@@ -138,7 +138,6 @@ namespace TradingEngine.Tests
                              SELECT date_trunc('day', ""timestamp"") as timestamp, stock_id, count(*) as count
                              FROM public.historical_prices
                              WHERE stock_id = 1
-                                --AND timestamp > '2023-11-24'
                              GROUP BY date_trunc('day', ""timestamp""), stock_id
                              order by date_trunc('day', ""timestamp"") DESC
                              ) 

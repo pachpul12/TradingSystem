@@ -39,7 +39,7 @@ namespace TradingEngine.Tests
             mockObject.Setup(m => m.PlaceOrder("", "", "", "", "", 0, 0));
 
             _orderManagementService = mockObject.Object;
-            _strategy = new MovingAverageCrossoverStrategy(_mockMarketContext, _orderManagementService, 5, 15);
+            _strategy = new MovingAverageCrossoverStrategy(_mockMarketContext, _orderManagementService, 5, 15, 0.02m);
         }
 
         [Test]
@@ -106,9 +106,8 @@ namespace TradingEngine.Tests
             }
         }
 
-
         [Test]
-        public void FetchAllStocks_Missing_HistoryData_ForAllStocks_ByNvdaData()
+        public void Fetch_Missing_SnP500_HistoryData_ForAllStocks_ByNvdaData()
         {
             EReaderMonitorSignal signal = new EReaderMonitorSignal();
             IBClient ibClient = new IBClient(signal);
@@ -134,8 +133,8 @@ namespace TradingEngine.Tests
                 Assert.Fail("stocks data for test is invalid, no records");
             }
 
-            string queryGetAllStocks = @"SELECT * FROM STOCKS;";
-            DataTable tblStocks = _postgresHelper.ExecuteQuery(queryGetAllStocks);
+            string queryGetAllSnpStocks = @"SELECT * FROM stocks WHERE exchange_id = 2 order by id asc;";
+            DataTable tblStocks = _postgresHelper.ExecuteQuery(queryGetAllSnpStocks);
 
             if (tblStocks == null || tblStocks.Rows.Count == 0)
             {
@@ -147,24 +146,109 @@ namespace TradingEngine.Tests
             {
                 int stockId = (int)row["id"];
                 string symbol = row["symbol"].ToString();
+                bool active = (bool)row["active"];
+                if (!active)
+                {
+                    continue;
+                }
+
+                if (stockId < 4136)
+                {
+                    continue;
+                }
 
                 if (symbol.ToUpper() == "NVDA")
                 {
                     continue;
                 }
-                if (symbol.ToUpper() == "FB")
+
+                foreach (DataRow rowNvdaDate in tblNvdaDates.Rows)
+                {
+                    long countNvda = (long)rowNvdaDate["count"];
+                    DateTime timestampNvda = (DateTime)rowNvdaDate["timestamp"];
+
+                    string queryCountPerDate = string.Format(@"SELECT COUNT(*) FROM public.historical_prices 
+                                                    WHERE stock_id = {0} AND 
+                                                        timestamp > '{1}' AND timestamp < '{2}'",
+                                                        stockId.ToString(),
+                                                        timestampNvda.ToString("yyyy-MM-dd"),
+                                                        timestampNvda.AddDays(1).ToString("yyyy-MM-dd")
+                                                        );
+
+                    DataTable tblCount = _postgresHelper.ExecuteQuery(queryCountPerDate);
+
+                    long countStock = (long)tblCount.Rows[0][0];
+
+                    if (countStock == countNvda)
+                    {
+                        continue;
+                    }
+
+
+
+                    historyDataManager.FetchHistoricalDataInChunks(symbol, "NYSE", "USD", "STK", "1 min", "TRADES", timestampNvda, timestampNvda.AddDays(1));
+
+                }
+
+            }
+
+            ibClient.DisconnectFromTWS();
+
+        }
+
+
+        [Test]
+        public void Fetch_Missing_Nasdaq_HistoryData_ForAllStocks_ByNvdaData()
+        {
+            EReaderMonitorSignal signal = new EReaderMonitorSignal();
+            IBClient ibClient = new IBClient(signal);
+
+            HistoryDataManager historyDataManager = new HistoryDataManager(_postgresHelper, ibClient);
+
+
+            historyDataManager.InitEvents();
+
+            ibClient.ConnectToTWS();
+
+            string queryNvdaDataDates = @"SELECT * FROM (
+ SELECT date_trunc('day', ""timestamp"") as timestamp, count(*) as count
+ FROM public.historical_prices
+ WHERE stock_id = 1
+ GROUP BY date_trunc('day', ""timestamp"")
+ order by date_trunc('day', ""timestamp"") DESC
+ ) ";
+            DataTable tblNvdaDates = _postgresHelper.ExecuteQuery(queryNvdaDataDates);
+
+            if (tblNvdaDates == null || tblNvdaDates.Rows.Count == 0)
+            {
+                Assert.Fail("stocks data for test is invalid, no records");
+            }
+
+            string queryGetAllNasdaqStocks = @"SELECT * FROM stocks WHERE exchange_id = 1;";
+            DataTable tblStocks = _postgresHelper.ExecuteQuery(queryGetAllNasdaqStocks);
+
+            if (tblStocks == null || tblStocks.Rows.Count == 0)
+            {
+                Assert.Fail("stocks data for test is invalid, no records");
+            }
+
+
+            foreach (DataRow row in tblStocks.Rows)
+            {
+                int stockId = (int)row["id"];
+                string symbol = row["symbol"].ToString();
+                bool active = (bool)row["active"];
+                if (!active)
                 {
                     continue;
                 }
-                if (symbol.ToUpper() == "FISV")
+
+                if (stockId < 70)
                 {
                     continue;
                 }
-                if (symbol.ToUpper() == "ATVI")
-                {
-                    continue;
-                }
-                if (symbol.ToUpper() == "AACG")
+
+                if (symbol.ToUpper() == "NVDA")
                 {
                     continue;
                 }
@@ -191,13 +275,16 @@ namespace TradingEngine.Tests
                         continue;
                     }
 
+
+
                     historyDataManager.FetchHistoricalDataInChunks(symbol, "NASDAQ", "USD", "STK", "1 min", "TRADES", timestampNvda, timestampNvda.AddDays(1));
 
                 }
 
             }
 
-            
+            ibClient.DisconnectFromTWS();
+
         }
     }
 }

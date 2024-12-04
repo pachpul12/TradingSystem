@@ -95,7 +95,7 @@ namespace TradingEngine.Tests
                     currentEndDate = currentStartDate;
 
                     // Pause to respect API rate limits
-                    Thread.Sleep(2000);
+                    Thread.Sleep(800);
                 }
                 catch (Exception ex)
                 {

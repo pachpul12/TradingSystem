@@ -11,7 +11,7 @@ namespace TradingEngine.Strategies
         private readonly int _longTermPeriod;
         private readonly decimal _minCrossoverThreshold;
 
-        public MovingAverageCrossoverStrategy(MarketContext marketContext, IOrderManagementService orderService, int shortTermPeriod, int longTermPeriod, decimal minCrossoverThreshold = 0.01m)
+        public MovingAverageCrossoverStrategy(MarketContext marketContext, IOrderManagementService orderService, int shortTermPeriod, int longTermPeriod, decimal minCrossoverThreshold)
             : base(marketContext, orderService)
         {
             _shortTermPeriod = shortTermPeriod;

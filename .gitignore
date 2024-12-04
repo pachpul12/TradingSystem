@@ -4,7 +4,6 @@
 .vs/
 **/[Bb]in/
 **/obj/
-**/.vs/
 # mstest test results
 TestResults
 
