@@ -34,18 +34,52 @@ namespace TradingEngine.Test
             mockObject.Setup(m => m.PlaceOrder("", "", "", "", "", 0, 0));
 
             _orderManagementService = mockObject.Object;
-            _strategy = new BollingerBandsStrategy(_mockMarketContext, _orderManagementService, 20, 2);
         }
 
-        private Dictionary<string, Dictionary<int, TestPosition>> _dictStockPositionsByDayByStock = new Dictionary<string, Dictionary<int, TestPosition>>();
-        private List<TestPosition> _testPositions = new List<TestPosition>();
+        [Test]
+        [TestCase(["2024-11-22", "2024-11-23", 20, 3.0])]
+        public void Simulate_Trading_Day(
+            string startDateStr, string endDateStr,
+            int periods, double multiplier)
+        {
+            DateTime startDate = DateTime.Parse(startDateStr);
+            DateTime endDate = DateTime.Parse(endDateStr);
+            decimal multiplierDecimal = (decimal)multiplier;
+            _strategy = new BollingerBandsStrategy(_mockMarketContext, _orderManagementService, periods, multiplierDecimal);
+
+            TestUtils.SimulateTradingDays(startDate, endDate, _strategy, _postgresHelper, _mockMarketContext);
+            
+        }
 
         [Test]
-        [TestCase(["2023-11-23", "2024-11-23", 0, 20, 2.0])]
-        [TestCase(["2022-11-23", "2023-11-23", 0, 20, 2.0])]
-        [TestCase(["2021-11-23", "2022-11-23", 0, 20, 2.0])]
-        [TestCase(["2020-11-23", "2021-11-23", 0, 20, 2.0])]
-        [TestCase(["2019-11-23", "2020-11-23", 0, 20, 2.0])]
+        [TestCase(["2024-11-22", "2024-11-23", 78, 20, 3.0])]
+        public void RunStrategyOnAllData_Daily_IntradayTrading_MultipleStocks(
+            string startDateStr, string endDateStr, int stockId,
+            int periods, double multiplier)
+        {
+            DateTime startDate = DateTime.Parse(startDateStr);
+            DateTime endDate = DateTime.Parse(endDateStr);
+            DateTime currentDate = endDate;
+            decimal multiplierDecimal = (decimal)multiplier;
+
+            // Input parameters
+            if (stockId > 0)
+            {
+                while (currentDate >= startDate)
+                {
+                    RunStrategyForStock(stockId, currentDate, currentDate.AddDays(1), periods, multiplierDecimal);
+
+                    currentDate = currentDate.AddDays(-1);
+                }
+            }
+        }
+
+        [Test]
+        [TestCase(["2023-11-23", "2024-11-23", 0, 20, 3.0])]
+        [TestCase(["2022-11-23", "2023-11-23", 0, 20, 3.0])]
+        [TestCase(["2021-11-23", "2022-11-23", 0, 20, 3.0])]
+        [TestCase(["2020-11-23", "2021-11-23", 0, 20, 3.0])]
+        [TestCase(["2019-11-23", "2020-11-23", 0, 20, 3.0])]
         public void RunStrategyOnOneYearData_IntradayTrading_MultipleStocks(
            string startDateStr, string endDateStr, int stockId,
            int periods, double multiplier)

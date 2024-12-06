@@ -205,8 +205,8 @@ namespace TradingEngine.Tests
                             IsOpen = true,
                             Quantity = 1,
                             SellPrice = null,
-                            buyDate = priceData.Timestamp,
-                            sellDate = null
+                            BuyDate = priceData.Timestamp,
+                            SellDate = null
                         };
 
                         if (!_dictStockPositionsByDayByStock.ContainsKey(priceData.Timestamp.ToString("yyyyMMdd")))
@@ -246,7 +246,7 @@ namespace TradingEngine.Tests
                         TestPosition testPosition = dictStockPositionsByDay[stockId];
 
                         testPosition.SellPrice = priceData.Close;
-                        testPosition.sellDate = priceData.Timestamp;
+                        testPosition.SellDate = priceData.Timestamp;
                         testPosition.IsOpen = false;
 
                         dictStockPositionsByDay.Remove(stockId);

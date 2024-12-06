@@ -8,12 +8,14 @@ namespace TradingEngine.Test
 {
     internal class TestPosition
     {
+        public int StockId;
         public int Quantity;
         public bool IsOpen;
         public decimal BuyPrice;
         public decimal? SellPrice;
-        public DateTime buyDate;
-        public DateTime? sellDate;
+        public DateTime BuyDate;
+        public DateTime? SellDate;
+        
 
     }
 }

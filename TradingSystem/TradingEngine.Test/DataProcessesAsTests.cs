@@ -152,7 +152,7 @@ namespace TradingEngine.Tests
                     continue;
                 }
 
-                if (stockId < 4136)
+                if (stockId < 4198)
                 {
                     continue;
                 }
