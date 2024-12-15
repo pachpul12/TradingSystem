@@ -37,17 +37,18 @@ namespace TradingEngine.Test
         }
 
         [Test]
-        [TestCase(["2024-11-22", "2024-11-23", 20, 3.0])]
+        [TestCase(["2020-02-01", "2020-03-01", 20, 3.0, 0.05])]
         public void Simulate_Trading_Day(
             string startDateStr, string endDateStr,
-            int periods, double multiplier)
+            int periods, double multiplier, double maxTradeFromInitialInv)
         {
             DateTime startDate = DateTime.Parse(startDateStr);
             DateTime endDate = DateTime.Parse(endDateStr);
             decimal multiplierDecimal = (decimal)multiplier;
+            decimal maxTradeFromInitialInvDecimal = (decimal)maxTradeFromInitialInv;
             _strategy = new BollingerBandsStrategy(_mockMarketContext, _orderManagementService, periods, multiplierDecimal);
 
-            TestUtils.SimulateTradingDays(startDate, endDate, _strategy, _postgresHelper, _mockMarketContext);
+            TestUtils.SimulateTradingDays(startDate, endDate, maxTradeFromInitialInvDecimal, _strategy, _postgresHelper, _mockMarketContext);
             
         }
 

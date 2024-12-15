@@ -138,7 +138,7 @@ namespace TradingEngine.Tests
 
             string query = @"SELECT * FROM (
                              SELECT date_trunc('day', ""timestamp"") as timestamp, stock_id, count(*) as count
-                             FROM public.historical_prices
+                             FROM public.stocks_prices
                              WHERE stock_id = 1
                                 --AND timestamp > '2023-11-24'
                              GROUP BY date_trunc('day', ""timestamp""), stock_id
@@ -161,7 +161,7 @@ namespace TradingEngine.Tests
                 int stockId = (int)rowDay["stock_id"];
                 DateTime timestampDay = (DateTime)rowDay["timestamp"];
 
-                string query2 = @"SELECT * FROM public.historical_prices 
+                string query2 = @"SELECT * FROM public.stocks_prices 
 		                        WHERE timestamp < '{0}' AND timestamp > '{1}' AND stock_id = {2}
 		                        order by timestamp asc;";
 
@@ -283,7 +283,7 @@ namespace TradingEngine.Tests
         [Test]
         public void Check_MovingAverageCrossoverStrategy_HistoryData_OneDay()
         {   
-            DataTable tblPrices = _postgresHelper.ExecuteQuery("SELECT * FROM public.historical_prices WHERE timestamp < '2024-11-26' AND timestamp > '2024-11-25' AND stock_id = 1 order by timestamp asc");
+            DataTable tblPrices = _postgresHelper.ExecuteQuery("SELECT * FROM public.stocks_prices WHERE timestamp < '2024-11-26' AND timestamp > '2024-11-25' AND stock_id = 1 order by timestamp asc");
 
             if (tblPrices == null || tblPrices.Rows.Count != 390)
             {

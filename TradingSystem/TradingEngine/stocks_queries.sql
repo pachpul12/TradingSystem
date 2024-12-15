@@ -5,3 +5,5 @@ SELECT id, symbol, exchange_id, active
 -- update public.stocks
 -- set active = false
 -- where id = 4209;
+
+SELECT COUNT(*) FROM stocks_prices; --70797603

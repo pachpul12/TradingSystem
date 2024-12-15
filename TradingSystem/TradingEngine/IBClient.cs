@@ -516,7 +516,7 @@ namespace TradingEngine
                 sc.Post(t => tmp(), null);
         }
 
-        event Action<RealTimeBarMessage> RealtimeBar;
+        public event Action<RealTimeBarMessage> RealtimeBar;
 
         void EWrapper.realtimeBar(int reqId, long time, double open, double high, double low, double close, decimal volume, decimal WAP, int count)
         {
@@ -759,6 +759,7 @@ namespace TradingEngine
         public Dictionary<int, string> RequestIdToType = new Dictionary<int, string>();
         public Dictionary<int, int> RequestIdToStockId = new Dictionary<int, int>();
         public Dictionary<int, bool> HistoryDataRequestIdCompletion = new Dictionary<int, bool>();
+        public Dictionary<int, DateTime> RequestIdToDate = new Dictionary<int, DateTime>();
 
         void EWrapper.smartComponents(int reqId, Dictionary<int, KeyValuePair<string, char>> theMap)
         {

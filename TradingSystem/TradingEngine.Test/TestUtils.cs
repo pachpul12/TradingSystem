@@ -25,7 +25,7 @@ namespace TradingEngine.Test
 
                 string query = @"
             SELECT timestamp, open_price, high_price, low_price, close_price, volume
-            FROM historical_prices
+            FROM stocks_prices
             WHERE stock_id = @stockId
               AND timestamp BETWEEN @startDate AND @endDate
             ORDER BY timestamp ASC";
@@ -73,30 +73,59 @@ namespace TradingEngine.Test
             }
         }
 
-        public static void SimulateTradingDays(DateTime startDate, DateTime endDate, TradingStrategy strategy, PostgresHelper postgresHelper, MarketContext mockMarketContext)
+        public static void SimulateTradingDays(DateTime startDate, DateTime endDate, decimal maxTradeFromInitialInv,
+                TradingStrategy strategy, PostgresHelper postgresHelper, MarketContext mockMarketContext)
         {
             int successfulTradesNumber = 0;
             int tradesNumber = 0;
-            decimal funds = 100000;
+            decimal initialFunds = 100000;
+            decimal funds = 0;
+            decimal maxTrade = initialFunds * maxTradeFromInitialInv;
 
             for (var date = startDate; date < endDate; date = date.AddDays(1))
             {
+                funds = initialFunds;
                 Console.WriteLine($"Processing trading day: {date.ToShortDateString()}");
 
                 // Fetch data for all stocks that have exactly 390 records for the day
                 string fetchDayDataQuery = @$"
             WITH valid_stocks AS (
-                SELECT stock_id
-                FROM historical_prices
-                WHERE date_trunc('day', timestamp) = '{date:yyyy-MM-dd}'
-                GROUP BY stock_id
-                HAVING COUNT(*) = 390
-            )
-            SELECT *
-            FROM historical_prices
-            WHERE date_trunc('day', timestamp) = '{date:yyyy-MM-dd}'
-            AND stock_id IN (SELECT stock_id FROM valid_stocks)
-            ORDER BY timestamp ASC, stock_id ASC;
+    SELECT stock_id
+    FROM stocks_prices_int5secs
+    WHERE date_trunc('day', timestamp) = '{date:yyyy-MM-dd}'
+    GROUP BY stock_id
+    HAVING COUNT(*) = 4680
+),
+last_7_days_volume AS (
+    SELECT 
+        stock_id, 
+        SUM(volume) AS total_volume
+    FROM 
+        stocks_prices_int5secs
+    WHERE 
+        timestamp >= '{date:yyyy-MM-dd}'::date - INTERVAL '7 days'
+        AND timestamp < '{date:yyyy-MM-dd}'::date
+    GROUP BY 
+        stock_id
+),
+top_80_percent AS (
+    SELECT stock_id
+    FROM last_7_days_volume
+    ORDER BY total_volume DESC
+    LIMIT (
+        SELECT CEIL(0.8 * COUNT(*)) 
+        FROM last_7_days_volume
+    )
+)
+SELECT sp.*
+FROM stocks_prices_int5secs sp
+WHERE 
+    date_trunc('day', sp.timestamp) = '{date:yyyy-MM-dd}'
+    AND sp.stock_id IN (SELECT stock_id FROM valid_stocks)
+    AND sp.stock_id IN (SELECT stock_id FROM top_80_percent)
+ORDER BY 
+    sp.timestamp ASC, sp.stock_id ASC;
+
         ";
 
                 DataTable dayData = postgresHelper.ExecuteQuery(fetchDayDataQuery);
@@ -116,6 +145,8 @@ namespace TradingEngine.Test
                 Dictionary<int, TestPosition> openPositions = new Dictionary<int, TestPosition>();
                 Dictionary<int, List<TestPosition>> closedPositions = new Dictionary<int, List<TestPosition>>();
 
+                List<TradingSignal> signals = new List<TradingSignal>();
+
                 // Prepare a list of rows sorted by timestamp and stock_id
                 var rows = dayData.AsEnumerable().OrderBy(row => row.Field<DateTime>("timestamp"))
                                                .ThenBy(row => row.Field<int>("stock_id"))
@@ -127,7 +158,7 @@ namespace TradingEngine.Test
 
                 foreach (var row in rows)
                 {
-                    DateTime timestamp = row.Field<DateTime>("timestamp");
+                    DateTime timestamp = row.Field<DateTime>("timestamp").ToLocalTime();
                     int stockId = row.Field<int>("stock_id");
                     decimal closePrice = row.Field<decimal>("close_price");
 
@@ -146,7 +177,7 @@ namespace TradingEngine.Test
                         High = row.Field<decimal>("high_price"),
                         Low = row.Field<decimal>("low_price"),
                         Close = closePrice,
-                        Volume = (long)row.Field<decimal>("volume")
+                        Volume = row.Field<long>("volume")
                     });
 
                     // If the timestamp advances past the current simulated minute, progress the time
@@ -177,7 +208,7 @@ namespace TradingEngine.Test
                     decimal stopLoss = 0.98M;
 
 
-                    if (timestamp == new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, 15, 59, 0))
+                    if (timestamp >= new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, 15, 59, 0))
                     {
                         if (entryPrice != null)
                         {
@@ -209,7 +240,7 @@ namespace TradingEngine.Test
                             //we don't want to buy on last minute of trading day
                             continue;
                         }
-                            
+
 
                     }
                     else if (entryPrice != null && entryPrice.Value * stopLoss >= closePrice)
@@ -243,7 +274,8 @@ namespace TradingEngine.Test
                         }
 
                         entryPrice = closePrice; // Record entry price
-                        entryAmount = (int)Math.Floor(funds / entryPrice.Value);
+                        decimal fundsForTrade = Math.Min(funds, maxTrade);
+                        entryAmount = (int)Math.Floor(fundsForTrade / entryPrice.Value);
                         entryPriceTotal = entryAmount * entryPrice.Value;
                         if (entryAmount > 0)
                         {
@@ -252,6 +284,7 @@ namespace TradingEngine.Test
                             openPosition.BuyPrice = closePrice;
                             openPosition.BuyDate = timestamp;
                             openPosition.Quantity = entryAmount.Value;
+                            openPosition.StockId = stockId;
                             tradesNumber++;
                             openPositions[stockId] = openPosition;
                             Console.WriteLine($"[Buy Signal] Stock ID: {stockId}, Time: {timestamp}");
@@ -285,9 +318,55 @@ namespace TradingEngine.Test
                         Console.WriteLine($"[Sell Signal] Stock ID: {stockId}, Time: {timestamp}");
                     }
                 }
-            }
 
-            Console.WriteLine("Simulation complete.");
+                var signalsJson = Newtonsoft.Json.JsonConvert.SerializeObject(signals);
+                var parametersJson = Newtonsoft.Json.JsonConvert.SerializeObject(new
+                {
+                    //todo - uncomment
+                    //ShortTermPeriod = shortTermPeriod,
+                    //LongTermPeriod = longTermPeriod,
+                    //MinCrossoverThreshold = minCrossoverThreshold
+                });
+
+
+
+
+                // Insert execution results into the database
+                string insertQuery = @$"
+INSERT INTO strategy_execution (
+    strategy_name,
+    single_stock_id,
+    start_date,
+    end_date,
+    parameters,
+    signals,
+    profit_loss,
+    start_price,
+    end_price,
+    price_yield,
+    trades_number,
+    winning_trades_number
+)
+VALUES (
+    'Simulation',
+    0,
+    '{date:yyyy-MM-dd}',
+    '{date.AddDays(1):yyyy-MM-dd}',
+    '{parametersJson}'::jsonb,
+    '{signalsJson}'::jsonb,
+    {funds / initialFunds},
+    0,
+    0,
+    0,
+    {tradesNumber},
+    {successfulTradesNumber}
+);";
+
+                postgresHelper.ExecuteNonQuery(insertQuery);
+
+                Console.WriteLine($"Simulation completed for date {startDate:yyyy-MM-dd}. Total P/L: {funds / initialFunds:C}");
+
+            }
         }
 
 
@@ -300,7 +379,7 @@ namespace TradingEngine.Test
                 // Query to filter days with exactly 390 records
                 string validDaysQuery = @$"
 SELECT date_trunc('day', timestamp) as day
-FROM historical_prices
+FROM stocks_prices
 WHERE stock_id = {stockId}
 AND timestamp >= '{startDate:yyyy-MM-dd}'
   AND timestamp < '{endDate:yyyy-MM-dd}'
@@ -338,7 +417,7 @@ ORDER BY day ASC;";
                     // Query historical prices for the valid day
                     string dailyQuery = @$"
 SELECT * 
-FROM historical_prices
+FROM stocks_prices
 WHERE stock_id = {stockId}
   AND timestamp >= '{currentDay:yyyy-MM-dd}'
   AND timestamp < '{currentDay.AddDays(1):yyyy-MM-dd}'

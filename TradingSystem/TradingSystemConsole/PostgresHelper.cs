@@ -56,7 +56,7 @@ public class PostgresHelper
                 connection.Open();
 
                 string query = @"
-                        INSERT INTO historical_prices (stock_id, timestamp, open_price, high_price, low_price, close_price, volume)
+                        INSERT INTO stocks_prices (stock_id, timestamp, open_price, high_price, low_price, close_price, volume)
                         VALUES (@stock_id, @timestamp, @open_price, @high_price, @low_price, @close_price, @volume);
                     ";
 

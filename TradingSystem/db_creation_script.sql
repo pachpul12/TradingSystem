@@ -13,8 +13,8 @@ CREATE TABLE Stocks (
     FOREIGN KEY (exchange_id) REFERENCES Exchanges(id)
 );
 
--- Create historical_prices table
-CREATE TABLE historical_prices (
+-- Create stocks_prices table
+CREATE TABLE stocks_prices (
     stock_id INTEGER NOT NULL, -- Foreign key referencing the stock
     timestamp TIMESTAMP NOT NULL, -- The timestamp for the data point
     open_price NUMERIC(18, 6) NOT NULL, -- The opening price of the stock

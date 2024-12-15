@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using TradingEngine.Data;
 using TradingEngine.Interfaces;
 
@@ -8,63 +7,68 @@ namespace TradingEngine.Strategies
 {
     public class OBVStrategy : TradingStrategy
     {
-        private readonly int _confirmationPeriod = 20;
-        private int _consistentUpTrendCount = 0;
-        private int _consistentDownTrendCount = 0;
-        private decimal _lastOBV = 0;
+        private readonly int _lookbackPeriod;
 
-        public OBVStrategy(MarketContext marketContext, IOrderManagementService orderService)
-            : base(marketContext, orderService) { }
-
-        private decimal CalculateOBVIncrement(decimal currentClose, decimal previousClose, decimal volume)
+        public OBVStrategy(MarketContext marketContext, IOrderManagementService orderService, int lookbackPeriod = 14)
+            : base(marketContext, orderService)
         {
-            if (currentClose > previousClose) return volume;
-            if (currentClose < previousClose) return -volume;
-            return 0; // No change in OBV if prices are equal
+            _lookbackPeriod = lookbackPeriod;
         }
 
         public override TradingSignal Evaluate(MarketContext context)
         {
             var prices = context.HistoricalPrices;
-            if (prices == null || prices.Count < _confirmationPeriod)
-                return new TradingSignal { Action = SignalType.Hold };
 
-            // Calculate current OBV incrementally
-            var latestPrice = prices.Last();
-            var previousPrice = prices[prices.Count - 2]; // Second-to-last price
-            _lastOBV += CalculateOBVIncrement(latestPrice.Close, previousPrice.Close, latestPrice.Volume);
-
-            // Check OBV trend and adjust counters
-            if (_lastOBV > 0)
+            if (prices.Count < _lookbackPeriod + 1)
             {
-                _consistentUpTrendCount++;
-                _consistentDownTrendCount = 0; // Reset opposite trend counter
-
-                if (_consistentUpTrendCount >= _confirmationPeriod)
-                {
-                    _consistentUpTrendCount = 0; // Reset after confirming the signal
-                    return new TradingSignal { Action = SignalType.Buy };
-                }
-            }
-            else if (_lastOBV < 0)
-            {
-                _consistentDownTrendCount++;
-                _consistentUpTrendCount = 0; // Reset opposite trend counter
-
-                if (_consistentDownTrendCount >= _confirmationPeriod)
-                {
-                    _consistentDownTrendCount = 0; // Reset after confirming the signal
-                    return new TradingSignal { Action = SignalType.Sell };
-                }
-            }
-            else
-            {
-                // Reset both counters if no trend
-                _consistentUpTrendCount = 0;
-                _consistentDownTrendCount = 0;
+                return new TradingSignal { Action = SignalType.Hold }; // Not enough data
             }
 
+            // Calculate OBV
+            var obvData = CalculateOBV(prices);
+
+            // Check for OBV divergence
+            var latestOBV = obvData[obvData.Count - 1];
+            var previousOBV = obvData[obvData.Count - 1 - _lookbackPeriod];
+
+            var latestPrice = prices[prices.Count - 1].Close;
+            var previousPrice = prices[prices.Count - 1 - _lookbackPeriod].Close;
+
+            if (latestOBV > previousOBV && latestPrice > previousPrice)
+            {
+                // Volume supports price uptrend
+                return new TradingSignal { Action = SignalType.Buy };
+            }
+            else if (latestOBV < previousOBV && latestPrice < previousPrice)
+            {
+                // Volume supports price downtrend
+                return new TradingSignal { Action = SignalType.Sell };
+            }
+
+            // No strong signal
             return new TradingSignal { Action = SignalType.Hold };
+        }
+
+        private List<decimal> CalculateOBV(List<PriceData> prices)
+        {
+            var obv = new List<decimal> { 0 }; // Initialize OBV with zero
+            for (int i = 1; i < prices.Count; i++)
+            {
+                if (prices[i].Close > prices[i - 1].Close)
+                {
+                    obv.Add(obv[i - 1] + prices[i].Volume);
+                }
+                else if (prices[i].Close < prices[i - 1].Close)
+                {
+                    obv.Add(obv[i - 1] - prices[i].Volume);
+                }
+                else
+                {
+                    obv.Add(obv[i - 1]); // No change in OBV if price is flat
+                }
+            }
+
+            return obv;
         }
     }
 }

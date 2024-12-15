@@ -4,7 +4,7 @@ using System;
 
 namespace TradingEngine.messages
 {
-    class RealTimeBarMessage : HistoricalDataMessage
+    public class RealTimeBarMessage : HistoricalDataMessage
     {
         public long Timestamp { get; set; }
 

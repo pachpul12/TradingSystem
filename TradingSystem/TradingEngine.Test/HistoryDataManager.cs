@@ -14,6 +14,7 @@ using IBApi;
 using TradingEngine;
 using TradingEngine.messages;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using static Npgsql.Replication.PgOutput.Messages.RelationMessage;
 using Contract = IBApi.Contract;
 
 namespace TradingEngine.Tests
@@ -38,7 +39,8 @@ namespace TradingEngine.Tests
         string barSize,
         string whatToShow,
         DateTime startDate,
-        DateTime endDate)
+        DateTime endDate, 
+        string durarionStr = "1 D")
         {
             DateTime currentEndDate = endDate;
             DateTime currentStartDate;
@@ -77,12 +79,13 @@ namespace TradingEngine.Tests
                     this.ibClient.RequestIdToType[reqId] = whatToShow;
                     this.ibClient.HistoryDataRequestIdCompletion[reqId] = false;
                     this.ibClient.RequestIdToStockId[reqId] = stockId;
+                    this.ibClient.RequestIdToDate[reqId] = currentEndDate;
 
                     ibClient.ClientSocket.reqHistoricalData(
                         tickerId: reqId,
                         contract: contract,
                         endDateTime: currentEndDate.ToString("yyyyMMdd HH:mm:ss"),
-                        durationStr: "1 D", // 1 day of data
+                        durationStr: durarionStr, // 1 day of data
                         barSizeSetting: barSize,
                         whatToShow: whatToShow,
                         useRTH: 1, // Use regular trading hours
@@ -121,6 +124,27 @@ namespace TradingEngine.Tests
             Console.WriteLine("Completed fetching data for all symbols.");
         }
 
+        public void StartGetRealtimeStockPrices(int stockId, string symbol,
+        string exchange,
+        string currency,
+        string secType,
+        int barSize)
+        {
+            Contract contract = new Contract
+            {
+                Symbol = symbol,
+                SecType = secType,
+                Exchange = exchange,
+                Currency = currency
+            };
+
+            int reqId = this.ibClient.nextRequestId++;
+
+            ibClient.RequestIdToStockId[reqId] = stockId;
+
+            ibClient.ClientSocket.reqRealTimeBars(reqId, contract, barSize, "TRADES", false, null);
+        }
+
 
 
 
@@ -149,6 +173,27 @@ namespace TradingEngine.Tests
             ibClient.HistoricalData += historicalData;
             ibClient.HistoricalDataEnd += historicalDataEnd;
             ibClient.HistoricalDataAllEnded += historicalDataAllEnded;
+            ibClient.RealtimeBar += realtimeBar;
+        }
+
+        public void realtimeBar(RealTimeBarMessage e)
+        {
+            Console.WriteLine("RealTimeBars. " + e.RequestId+ " - Time: " + Util.LongMaxString(e.Timestamp) + ", Open: " + Util.DoubleMaxString(e.Open) + ", High: " + Util.DoubleMaxString(e.High) +
+                ", Low: " + Util.DoubleMaxString(e.Low) + ", Close: " + Util.DoubleMaxString(e.Close) + ", Volume: " + Util.DecimalMaxString(e.Volume) + ", Count: " + Util.IntMaxString(e.Count) +
+                ", WAP: " + Util.DecimalMaxString(e.Wap));
+
+
+            CultureInfo provider = CultureInfo.InvariantCulture;
+            string format = "yyyyMMdd HH:mm:ss";
+
+            var dateArray = e.Date.Split("-");
+
+            string dateFinal = dateArray[0] + " " + dateArray[1];
+
+            DateTime date = DateTime.ParseExact(dateFinal, format, provider);
+            //todo - fix hardcoded stockid
+            int stockId = ibClient.RequestIdToStockId[e.RequestId];
+            postgresHelper.InsertToRealtimeStocksPrices(stockId, date, (decimal)e.Open, (decimal)e.High, (decimal)e.Low, (decimal)e.Close, e.Volume, e.Count, e.Wap);
         }
 
         public void historicalDataAllEnded(object sender, EventArgs e)
@@ -159,6 +204,7 @@ namespace TradingEngine.Tests
         public void historicalData(HistoricalDataMessage e)
         {
             CultureInfo provider = CultureInfo.InvariantCulture;
+            
             string format = "yyyyMMdd HH:mm:ss";
 
             var dateArray = e.Date.Split(" ");
@@ -168,9 +214,19 @@ namespace TradingEngine.Tests
             DateTime date = DateTime.ParseExact(dateFinal, format, provider);
             //todo - fix hardcoded stockid
             int stockId = ibClient.RequestIdToStockId[e.RequestId];
-            postgresHelper.InsertToHistoricalPrices(stockId, date, (decimal)e.Open, (decimal)e.High, (decimal)e.Low, (decimal)e.Close, e.Volume);
-            Contract contract = ibClient.RequestIdToContract[e.RequestId];
-            string whatToShow = ibClient.RequestIdToType[e.RequestId];
+            DateTime requestDate = ibClient.RequestIdToDate[e.RequestId];
+
+            try
+            {
+                postgresHelper.InsertToHistoricalPricesInt5Secs(stockId, date, (decimal)e.Open, (decimal)e.High, (decimal)e.Low, (decimal)e.Close, e.Volume);
+                Contract contract = ibClient.RequestIdToContract[e.RequestId];
+                string whatToShow = ibClient.RequestIdToType[e.RequestId];
+            }
+            catch (Exception ex) {
+                string s = "1111";
+            }
+
+            
         }
 
         void historicalDataEnd(HistoricalDataEndMessage e)
